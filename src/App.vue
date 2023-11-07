@@ -1,5 +1,6 @@
 <script setup>
 import Home from "./components/Home.vue";
+import Menubar from 'primevue/menubar';
 
 const items = [
         {
@@ -41,10 +42,10 @@ const items = [
 </script>
 
 <template>
-  <Home/>
+  
   <div>
     <Menubar :model="items" />
-    <router-view></router-view>
+    <router-view><Home/></router-view>
   </div>
 </template>
 
