@@ -1,15 +1,17 @@
 <template>
     <div>
-        <h1>Welcome to the Charts Page</h1>
-        <p>This is the charts page.</p>
+        <h1>Charts</h1>
     </div>
 </template>
 
 <script setup>
-/* Add your component-specific scripts here */ 
+import Chart from 'primevue/chart';
 </script>
 
 <style scoped>
-/* Add your component-specific styles here */
+h1{
+    margin-left: 40px;
+    margin-right: 40px
+}
 </style>
   

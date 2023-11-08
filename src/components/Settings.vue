@@ -1,15 +1,31 @@
 <template>
     <div>
-        <h1>Welcome to the Settings Page</h1>
-        <p>This is the settings page.</p>
+        <h1>Settings</h1>
+        <div class="settings">
+            <i class="pi pi-shield" style="font-size: 1.5rem">Security</i>  <br>
+            <i class="pi pi-palette" style="font-size: 1.5rem">Theme</i>  <br>
+            <i class="pi pi-power-off" style="font-size: 1.5rem">Log Out</i> 
+        </div>
     </div>
 </template>
 
 <script setup>
-/* Add your component-specific scripts here */ 
+
 </script>
 
 <style scoped>
-/* Add your component-specific styles here */
+.settings {
+    display: inline-block;
+    justify-content: space-between;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+h1{
+    margin-left: 40px;
+    margin-right: 40px
+}
+.pi{
+    margin-top: 20px;
+}
 </style>
   

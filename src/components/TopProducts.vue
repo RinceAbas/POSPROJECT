@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>Top Products</h1>
-        <p>This is the Top Products page of your application.</p>
     </div>
 </template>
 
@@ -10,5 +9,8 @@
 </script>
 
 <style scoped>
-/* Add your component-specific styles here */
+h1{
+    margin-left: 40px;
+    margin-right: 40px
+}
 </style>

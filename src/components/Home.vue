@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h1>Welcome to the Home Page</h1>
-        <p>This is the home page.</p>
+        <h1>Home</h1>
     </div>
 </template>
 
@@ -10,6 +9,9 @@
 </script>
 
 <style scoped>
-/* Add your component-specific styles here */
+h1{
+    margin-left: 40px;
+    margin-right: 40px
+}
 </style>
   
