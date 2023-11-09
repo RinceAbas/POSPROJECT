@@ -1,3 +1,58 @@
+<template>
+    <div class="container">
+        <h1>Reviews</h1>
+        <div class="SortBy">
+            <Dropdown
+                v-model="sorts.date"
+                :options="sb.date"
+                optionLabel="name"
+                placeholder="Sort By Date"
+                class="w-full md:w-14rem"
+            />
+        </div>
+        <div class="SortBy">
+            <Dropdown
+                v-model="sorts.name"
+                :options="sb.name"
+                optionLabel="name"
+                placeholder="Sort By Name"
+                class="w-full md:w-14rem"
+            />
+        </div>
+        <div class="SortBy">
+            <Dropdown
+                v-model="sorts.product"
+                :options="sb.product"
+                optionLabel="name"
+                placeholder="Sort By Product"
+                class="w-full md:w-14rem"
+            />
+        </div>
+        <div class="SortBy">
+            <Dropdown
+                v-model="sorts.price"
+                :options="sb.price"
+                optionLabel="name"
+                placeholder="Sort By Price"
+                class="w-full md:w-14rem"
+            />
+        </div>
+    </div>
+    <div class="reviews">
+        <div class="row">
+            <div class="col-md-4" v-for="(review, i) in reviews" :key="i">
+                <Panel :header="review.title">
+                    <div class="review">
+                        <div class="stars">{{ review.stars }}</div>
+                        <div class="description">{{ review.text }}</div>
+                        <div class="product-title">{{ review.title }}</div>
+                    </div>
+                </Panel>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup>
 import Dropdown from "primevue/dropdown";
 import Panel from "primevue/panel";
@@ -68,76 +123,14 @@ const reviews = computed(() => {
 });
 </script>
 
-<template>
-    <div class="container">
-        <h1>Reviews</h1>
-        <div class="SortBy">
-            <Dropdown
-                v-model="sorts.date"
-                :options="sb.date"
-                optionLabel="name"
-                placeholder="Sort By Date"
-                class="w-full md:w-14rem"
-            />
-        </div>
-        <div class="SortBy">
-            <Dropdown
-                v-model="sorts.name"
-                :options="sb.name"
-                optionLabel="name"
-                placeholder="Sort By Name"
-                class="w-full md:w-14rem"
-            />
-        </div>
-        <div class="SortBy">
-            <Dropdown
-                v-model="sorts.product"
-                :options="sb.product"
-                optionLabel="name"
-                placeholder="Sort By Product"
-                class="w-full md:w-14rem"
-            />
-        </div>
-        <div class="SortBy">
-            <Dropdown
-                v-model="sorts.price"
-                :options="sb.price"
-                optionLabel="name"
-                placeholder="Sort By Price"
-                class="w-full md:w-14rem"
-            />
-        </div>
-    </div>
-    <div class="reviews">
-        <div class="row">
-            <div class="col-md-4" v-for="(review, i) in reviews" :key="i">
-                <Panel :header="review.title">
-                    <div class="review">
-                        <div class="stars">{{ review.stars }}</div>
-                        <div class="description">{{ review.text }}</div>
-                        <div class="product-title">{{ review.title }}</div>
-                    </div>
-                </Panel>
-            </div>
-        </div>
-    </div>
-</template>
-
-
 <style scoped>
-.container{
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-top: 20px;
-}
-
-.reviews{
+.container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
 }
 
 h1 {
@@ -150,10 +143,11 @@ h1 {
 
 .reviews {
     margin-top: 20px;
+}
+
+.review {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    justify-content: space-between;
     margin-bottom: 20px;
 }
 
@@ -173,9 +167,14 @@ h1 {
 .row {
     display: flex;
     flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
 }
 
-.col-md-4 {
+.col-md-4 { 
+    position: relative;
+    width: 100%;
+    min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
     margin-top: 20px;
