@@ -22,28 +22,18 @@ const items = [
           to: "/Inventory",
         },
         {
-          label: "TopProducts",
-          icon: "pi pi-star-fill",
-          to: "/TopProducts",
-        },
-        {
           label: "Settings",
           icon: "pi pi-cog",
           to: "/Settings",
-        },
-        {
-          label: "Profile",
-          icon: "pi pi-user",
-          to: "/Profile",
         },
       ];
 </script>
 
 <template>
-  <div>
     <Menubar :model="items" />
     <router-view></router-view>
-  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
