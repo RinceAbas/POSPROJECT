@@ -39,11 +39,10 @@
         </div>
         <div class="SortBy">
             <button class="add-review-btn" @click="showOverlay = true">Add Review</button>
-        </div>
+        </div>  
     </div>
-    <div class="reviews">
-        <div class="row">
-            <div class="col-md-4" v-for="(review, i) in reviews" :key="i">
+        <div class="reviews">
+            <div class="review-container" v-for="(review, i) in reviews" :key="i">
                 <Panel :header="review.title" toggleable>
                     <div class="review">
                         <div class="stars">{{ review.stars }}</div>
@@ -55,8 +54,10 @@
                     </div>
                 </Panel>
             </div>
-        </div>
-    </div>
+        </div> 
+
+
+
     <div class="overlay" v-if="showOverlay">
         <div class="overlay-content">
             <h2>{{ editIndex === null ? 'Add Review' : 'Edit Review' }}</h2>
@@ -153,6 +154,17 @@ const reviews = ref([
         stars: "★★★",
         title: "Product Title 6",
     },
+    {
+        text: "This product is amazing!",
+        stars: "★★★",
+        title: "Product Title 6",
+    },
+    {
+        text: "This product is amazing!",
+        stars: "★★★",
+        title: "Product Title 6",
+    },
+
 ]);
 
 const newReview = ref({
@@ -202,29 +214,24 @@ function deleteReview(index) {
     margin-top: 20px;
 }
 
-.reviews {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-h1 {
-    margin: 0;
-}
-
 .SortBy {
     margin-left: 20px;
 }
 
+
 .reviews {
-    margin-top: 20px;
+    margin-top: 20px; margin-bottom: 20px;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
+.review-container{
+    width: 400px;
+    margin: 10px 20px;
+}
 .stars {
     font-size: 24px;
     margin-bottom: 10px;
@@ -238,16 +245,6 @@ h1 {
     font-weight: bold;
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.col-md-4 {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-top: 20px;
-}
 
 @media (min-width: 768px) {
     .col-md-4 {
