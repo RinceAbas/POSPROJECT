@@ -4,7 +4,9 @@
         <div class="settings">
             <i class="pi pi-shield" style="font-size: 1.5rem">Security</i>  <br>
             <i class="pi pi-palette" style="font-size: 1.5rem">Theme</i>  <br>
+            <i class="pi pi-user" style="font-size: 1.5rem">Profile</i>  <br>
             <i class="pi pi-power-off" style="font-size: 1.5rem">Log Out</i> 
+
         </div>
     </div>
 </template>

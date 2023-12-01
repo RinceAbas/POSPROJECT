@@ -38,6 +38,15 @@
             />
         </div>
         <div class="SortBy">
+            <Dropdown
+                v-model="sorts.stars"
+                :options="sb.stars"
+                optionLabel="name"
+                placeholder="Sort By Stars"
+                class="w-full md:w-14rem"
+            />
+        </div>
+        <div class="SortBy">
             <button class="add-review-btn" @click="showOverlay = true">Add Review</button>
         </div>
     </div>
@@ -113,6 +122,13 @@ const sb = ref({
         { name: "Low to High", code: "LH" },
         { name: "High to Low", code: "HL" },
     ],
+    stars: [
+        { name: "1 Star", code: "1" },
+        { name: "2 Stars", code: "2" },
+        { name: "3 Stars", code: "3" },
+        { name: "4 Stars", code: "4" },
+        { name: "5 Stars", code: "5" },
+    ],
 });
 
 const sorts = ref({
@@ -120,6 +136,7 @@ const sorts = ref({
     name: null,
     product: null,
     price: null,
+    stars: null,
 });
 
 const reviews = ref([
