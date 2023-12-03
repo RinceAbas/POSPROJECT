@@ -1,114 +1,313 @@
-<template>
-    <h1>Home</h1>
-    <div class="chart">
-        <Chart :type="'pie'" :data="chartData" :options="chartOptions" />
-    </div>
-    <div class="panels">
-        <div v-for="product in panelProducts" :key="product.name" class="panel">
-            <h2>{{ product.name }}</h2>
-            <div class="rating">
-                <span v-for="star in 5" :key="star" class="star">★</span>
-            </div>
-            <p>{{ product.review }}</p>
+    <template>
+
+    <div class="pageBody">    
+        <div class="Header">
+        <h2>Categories</h2>
         </div>
-    </div>
-    <div class="panels">
-        <div v-for="product in additionalPanelProducts" :key="product.name" class="panel">
-            <h2>{{ product.name }}</h2>
-            <div class="rating">
-                <span v-for="star in 5" :key="star" class="star">★</span>
+
+        <div class="categories">
+            <div class="all">
+                <Button outlined class="border-all" raised severity="secondary" text>
+                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                </Button>
+                <p>All</p>
             </div>
-            <p>{{ product.review }}</p>
+            <div class="meals">
+                <Button outlined class="border-meals" raised severity="secondary" text>
+                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                </Button>
+                <p>Meals</p>
+            </div>
+            <div class="drinks">
+                <Button outlined class="border-drinks" raised severity="secondary" text>
+                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                </Button>
+                <p>Drinks</p>
+            </div>
+            <div class="snacks">
+                <Button outlined class="border-snacks" raised severity="secondary" text>
+                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                </Button>
+                <p>Snacks</p>
+            </div>
+            <div class="deserts">
+                <Button outlined class="border-deserts" raised severity="secondary" text>
+                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                </Button>
+                <p>Desserts</p>
+            </div>
         </div>
-    </div>
-    <div class="table">
-        <DataTable :value="tableProducts">
-            <Column field="name" header="Name"></Column>
-            <Column field="category" header="Product Category"></Column>
-            <Column field="quantity" header="Quantity"></Column>
-        </DataTable>
-    </div>
-</template>
+        <div class="body">
+            <h2>Menu</h2>
+        </div>
+        <div class="menuBody">
+            <div class="menu-container" v-for="(menuItems, i) in menuItems" :key="i">
+                <Panel :header="menuItems.category">
+                    <div class="menuItems">
+                        <div class="itemPic">
+                            <Image :src="menuItems.samplepic" alt="Item Image" width="100" />
+                        </div>
+                        <div class="name">{{ menuItems.name }}</div>
+                        <div class="price">{{ menuItems.price }}</div>
+                        <div class="buttons">
+                            <Button icon="pi pi-plus" severity="secondary" aria-label="Bookmark" class="plusOrder" @click="addToOrder(menuItems)"></Button>
+                            <Button icon="pi pi-minus" severity="secondary" aria-label="Bookmark" class="minusOrder"> </Button>
+                        </div>
+                    </div>
+                </Panel>
+            </div>
+            </div>
+        </div>    
+        <div class="totalBoxTop"><h1>Orders</h1></div>
+        <div class="orderInfo">
+                    <div v-for="(order, index) in orders" :key="index">
+                        <div>{{ order.name }}</div>
+                        <div>{{ order.price }}</div>
+                    </div>
+                </div>
 
-<script setup>
-import Chart from 'primevue/chart';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+        <div class="calculateTotal"><h2>Total: {{ calculateTotal() }}</h2></div>
+        <div class="bottomBttn">
+            <Button label="Secondary" severity="secondary" raised>Done</Button>
+            <Button label="Danger" severity="danger" raised>Clear</Button>
+        </div>        
+    </template>
 
-const panelProducts = [
-    { name: 'Product 1', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    { name: 'Product 2', review: 'Nulla facilisi. Sed euismod, elit at aliquet tincidunt.' },
-    { name: 'Product 3', review: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.' },
-    { name: 'Product 4', review: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.' },
-];
+    <script setup>
+    import Image from 'primevue/image';
+    import Button from 'primevue/button';
+    import 'primeicons/primeicons.css'
+    import Panel from 'primevue/panel';
+    
+    import { ref, computed } from "vue";
 
-const additionalPanelProducts = [
-    { name: 'Product 5', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    { name: 'Product 6', review: 'Nulla facilisi. Sed euismod, elit at aliquet tincidunt.' },
-    { name: 'Product 7', review: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.' },
-    { name: 'Product 8', review: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.' },
-];
+    const visible = ref(false);
 
-const tableProducts = [
-    { name: 'Product 1', category: 'Category A', quantity: 10 },
-    { name: 'Product 2', category: 'Category B', quantity: 5 },
-    { name: 'Product 3', category: 'Category A', quantity: 2 },
-    { name: 'Product 4', category: 'Category C', quantity: 7 },
-];
-
-const chartData = {
-    datasets: [
+    const menuItems = ref([
         {
-            data: [300, 50, 100],
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+            category: "Meal",
+            name: "Adobo with Rice",
+            price: "60",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
         },
-    ],
-};
+        {
+            category: "Meal",
+            name: "Afritada with Rice",
+            price: "60",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Meal",
+            name: "Mechado with Rice",
+            price: "60",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Drinks",
+            name: "Coke",
+            price: "25",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Drinks",
+            name: "Minute-Maid",
+            price: "20",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Drinks",
+            name: "Mineral Water",
+            price: "20",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Snacks",
+            name: "Rebisco",
+            price: "8",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Snacks",
+            name: "Maruya",
+            price: "10",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Snacks",
+            name: "Bread",
+            price: "10",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Desserts",
+            name: "Spaghetti",
+            price: "30",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Desserts",
+            name: "Halo-Halo",
+            price: "30",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Desserts",
+            name: "Mais Con Yelo",
+            price: "30",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        }
+    ]);
+    
+    const orders = ref([]);
 
-const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-};
-</script>
 
-<style scoped>
-h1 {
-    margin-left: 40px;
-    margin-right: 40px;
-}
+    function addToOrder(menuItem) {
+        orders.value.push(menuItem);
+    }
 
-.chart {
-    float: left;
-    margin-left: 40px;
-}
 
-.table {
-    display: flex;
-    margin-left: 60px;
-    position: absolute;
-    bottom: 90px;
-}
+    function calculateTotal() {
+        let total = 0;
+        for (const order of orders.value) {
+            total += parseInt(order.price);
+        }
+        return total;
+    }
 
-.panels {
-    display: flex;
-    margin-left: 500px;
-    margin-bottom: 20px;
-}
+    </script>
 
-.panel {
-    width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 20px;
-}
-
-.rating {
-    margin-bottom: 10px;
-}
-
-.star {
-    color: gold;
-}
-</style>
+    <style scoped>
+    .Header {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        height: 60px;
+        border-radius: 10px;
+        margin: 10px;
+        margin-left: 30px;
+    }
+    .categories{
+        display: inline-flex;
+        margin-left: 100px;
+    }
+    .all{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+    }
+    .meals{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+    }
+    .drinks{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+    }
+    .snacks{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+    }
+    .deserts{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+    }
+    .body {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        height: 60px;
+        border-radius: 10px;
+        margin: 10px;   
+        margin-left: 30px;
+    }
+    .menuBody{
+        margin-top: 20px; margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        flex-direction:row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .menu-container{
+        width: 400px;
+        margin: 10px 20px;
+    }
+    .itemPic{
+        margin-bottom: 10px;
+    }
+    .plusOrder {
+        justify-content: center;
+        border-radius: 5px;
+        margin-top: 10px;
+        margin-right: 5px;
+    }
+    .totalBoxTop{
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 9.4px;
+        margin-top: 77px;
+        margin-bottom: 10px;
+        left: 1050px;
+        bottom: 1000px;
+        text-align: center;
+    }
+    .orderInfo{
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 9.4px;
+        margin-top: 150px;
+        margin-bottom: 10px;
+        left: 1050px;
+        bottom: 1000px;
+    }
+    .calculateTotal{
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 9.4px;
+        margin-top: 650px;
+        margin-bottom: 10px;
+        left: 1050px;
+        bottom: 1000px;
+    }
+    .bottomBttn{
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 9.4px;
+        margin-left: 260px;
+        margin-top: 665px;
+        margin-bottom: 10px;
+        left: 1050px;
+        bottom: 1000px;
+    }
+    .pageBody{
+        background-color: #EFC5D2;
+        margin-right: 450px;
+        border-radius: 10px;
+    }
+    </style>
