@@ -48,7 +48,7 @@
                             <Image :src="menuItems.samplepic" alt="Item Image" width="100" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
-                        <div class="price">{{ menuItems.price }}</div>
+                        <div class="price">₱{{ menuItems.price }}</div>
                         <div class="buttons">
                             <Button icon="pi pi-plus" severity="secondary" aria-label="Bookmark" class="plusOrder" @click="addToOrder(menuItems)"></Button>
                             <Button icon="pi pi-minus" severity="secondary" aria-label="Bookmark" class="minusOrder" @click="removeFromOrder(menuItems)"> </Button>
@@ -62,7 +62,7 @@
         <div class="orderInfo">
                     <div v-for="(order, index) in orders" :key="index">
                         <div>{{ order.name }}</div>
-                        <div>{{ order.price }}</div>
+                        <div>₱{{ order.price }}</div>
                         <div>{{ order.quantity }}</div>
                     </div>
                 </div>
