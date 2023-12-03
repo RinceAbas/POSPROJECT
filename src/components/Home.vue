@@ -51,7 +51,7 @@
                         <div class="price">{{ menuItems.price }}</div>
                         <div class="buttons">
                             <Button icon="pi pi-plus" severity="secondary" aria-label="Bookmark" class="plusOrder" @click="addToOrder(menuItems)"></Button>
-                            <Button icon="pi pi-minus" severity="secondary" aria-label="Bookmark" class="minusOrder"> </Button>
+                            <Button icon="pi pi-minus" severity="secondary" aria-label="Bookmark" class="minusOrder" @click="removeFromOrder(menuItems)"> </Button>
                         </div>
                     </div>
                 </Panel>
@@ -63,13 +63,14 @@
                     <div v-for="(order, index) in orders" :key="index">
                         <div>{{ order.name }}</div>
                         <div>{{ order.price }}</div>
+                        <div>{{ order.quantity }}</div>
                     </div>
                 </div>
 
         <div class="calculateTotal"><h2>Total: {{ calculateTotal() }}</h2></div>
         <div class="bottomBttn">
-            <Button label="Secondary" severity="secondary" raised>Done</Button>
-            <Button label="Danger" severity="danger" raised>Clear</Button>
+            <Button label="Secondary" severity="secondary" raised class="doneCBttn" @click="doneOrders">Done</Button>
+            <Button label="Danger" severity="danger" raised class="clearCBttn" @click="clearOrders(menuItems)">Clear</Button>
         </div>        
     </template>
 
@@ -78,7 +79,8 @@
     import Button from 'primevue/button';
     import 'primeicons/primeicons.css'
     import Panel from 'primevue/panel';
-    
+
+
     import { ref, computed } from "vue";
 
     const visible = ref(false);
@@ -157,23 +159,44 @@
             samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
         }
     ]);
-    
+
     const orders = ref([]);
 
 
     function addToOrder(menuItem) {
-        orders.value.push(menuItem);
+        const existingOrder = orders.value.find(order => order.name === menuItem.name);
+        if (existingOrder) {
+            existingOrder.quantity++;
+        } else {
+            orders.value.push({ ...menuItem, quantity: 1 });
+        }
     }
 
+    function removeFromOrder(menuItem) {
+        const existingOrder = orders.value.find(order => order.name === menuItem.name);
+        if (existingOrder) {
+            existingOrder.quantity--;
+            if (existingOrder.quantity === 0) {
+                orders.value.splice(orders.value.indexOf(existingOrder), 1);
+            }
+        }
+    }
 
     function calculateTotal() {
         let total = 0;
         for (const order of orders.value) {
-            total += parseInt(order.price);
+            total += parseInt(order.price) * order.quantity;
         }
         return total;
     }
 
+    function doneOrders() {
+            
+    }
+
+    function clearOrders() {
+        orders.value = [];
+    }
     </script>
 
     <style scoped>
@@ -304,6 +327,9 @@
         margin-bottom: 10px;
         left: 1050px;
         bottom: 1000px;
+    }
+    .clearCBttn{
+        margin-left: 10px;
     }
     .pageBody{
         background-color: #EFC5D2;
