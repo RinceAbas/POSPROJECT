@@ -57,7 +57,7 @@
                 </Panel>
             </div>
             </div>
-        </div>    
+        </div>
         <div class="totalBoxTop"><h1>Orders</h1></div>
         <div class="orderInfo">
                     <div v-for="(order, index) in orders" :key="index">
@@ -67,11 +67,22 @@
                     </div>
                 </div>
 
-        <div class="calculateTotal"><h2>Total: {{ calculateTotal() }}</h2></div>
+        <div class="calculateTotal"><h2>Total: ₱{{ calculateTotal() }}</h2></div>
         <div class="bottomBttn">
-            <Button label="Secondary" severity="secondary" raised class="doneCBttn" @click="doneOrders">Done</Button>
+            <Button label="Secondary" severity="secondary" raised class="doneCBttn" @click="showOverlay = true">Done</Button>
             <Button label="Danger" severity="danger" raised class="clearCBttn" @click="clearOrders(menuItems)">Clear</Button>
         </div>        
+
+        <div v-if="showOverlay" class="overlay">
+            <div class="overlay-content">
+                <h3>Payment Method</h3>
+                <Button label="Cash" class="cashBttn" @click="handlePayment('cash')" />
+                <Button label="Gcash" class="onlineBttn" @click="handlePayment('online')" />
+                <Button label="Cancel" severity="danger" class="cancelCBttn" @click="showOverlay = false">Cancel</Button> 
+            </div>
+        </div>
+
+        
     </template>
 
     <script setup>
@@ -81,9 +92,17 @@
     import Panel from 'primevue/panel';
 
 
+
     import { ref, computed } from "vue";
 
     const visible = ref(false);
+    const showOverlay = ref(false);
+    const handlePayment = (method) => {
+        // Handle payment logic here
+        console.log(`Payment method: ${method}`);
+        showOverlay.value = false;
+    };
+
 
     const menuItems = ref([
         {
@@ -161,6 +180,7 @@
     ]);
 
     const orders = ref([]);
+
 
 
     function addToOrder(menuItem) {
@@ -285,7 +305,7 @@
         padding: 10px;
         border-radius: 5px;
         margin-right: 9.4px;
-        margin-top: 77px;
+        margin-top: 50px;
         margin-bottom: 10px;
         left: 1050px;
         bottom: 1000px;
@@ -298,7 +318,7 @@
         padding: 10px;
         border-radius: 5px;
         margin-right: 9.4px;
-        margin-top: 150px;
+        margin-top: 130px;
         margin-bottom: 10px;
         left: 1050px;
         bottom: 1000px;
@@ -332,8 +352,30 @@
         margin-left: 10px;
     }
     .pageBody{
-        background-color: #EFC5D2;
         margin-right: 450px;
         border-radius: 10px;
+    }
+    .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    .overlay-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .cashBttn{
+        margin-right: 10px;
+    }
+    .onlineBttn{
+        margin-right: 10px;
     }
     </style>

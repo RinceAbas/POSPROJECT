@@ -1,43 +1,18 @@
 <template>
-    <div>
-        <h1>Inventory</h1>
-        <DataTable :value="products">
-            <Column field="name" header="Name"></Column>
-            <Column field="category" header="Product Category"></Column>
-            <Column field="quantity" header="Quantity"></Column>
-            <Column field="price" header="Price per Piece"></Column>
+    <div class="pageBody">
+        <h1>Debt</h1>
+        <DataTable :value="orders">
+            <Column field="orderNum" header="Order Number"></Column>
+            <Column field="date" header="Date"></Column>
+            <Column field="time" header="Time"></Column>
+            <Column field="total" header="Total"></Column>
             <Column header="Actions">
                 <template #body="rowData">
-                    <Button icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 action-button" @click="editProduct(rowData)"></Button>
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger action-button" @click="deleteProduct(rowData)"></Button>
+                    <Button icon="pi pi-check-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="confirmOrder(rowData)"></Button>
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger action-button" @click="deleteOrder(rowData)"></Button>
                 </template>
             </Column>
         </DataTable>
-        <Button class="addButton" @click="showAddDialog = true">Add Product</Button>
-        <Dialog v-model="showAddDialog" header="Add Product">
-            <div class="p-fluid">
-                <div class="p-field">
-                    <label for="name">Name</label>
-                    <InputText v-model="newProduct.name" id="name" />
-                </div>
-                <div class="p-field">
-                    <label for="category">Category</label>
-                    <InputText v-model="newProduct.category" id="category" />
-                </div>
-                <div class="p-field">
-                    <label for="quantity">Quantity</label>
-                    <InputNumber v-model="newProduct.quantity" id="quantity" />
-                </div>
-                <div class="p-field">
-                    <label for="price">Price per Piece</label>
-                    <InputNumber v-model="newProduct.price" id="price" />
-                </div>
-            </div>
-            <template #footer>
-                <Button label="Cancel" class="p-button-text" @click="showAddDialog = false" />
-                <Button label="Add" class="p-button-success" @click="addProduct" />
-            </template>
-        </Dialog>
     </div>
 </template>
 
@@ -45,43 +20,21 @@
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import InputNumber from 'primevue/inputnumber';
 
-const products = [
-    { name: 'Product 1', category: 'Category A', quantity: 10, price: 5.99 },
-    { name: 'Product 2', category: 'Category B', quantity: 5, price: 9.99 },
-    { name: 'Product 3', category: 'Category A', quantity: 2, price: 12.99 },
-    { name: 'Product 4', category: 'Category C', quantity: 7, price: 7.49 },
+const orders = [
+    { orderNum: '1', date: '10/25/23', time: '12:00nn', total: '₱60' },
+    { orderNum: '2', date: '10/25/23', time: '1:00pm', total: '₱100'},
+    { orderNum: '3', date: '10/26/23', time: '10:00am', total: '₱20' },
+    { orderNum: '4', date: '10/27/23', time: '11:00am', total: '₱10' },
 ];
 
-let showAddDialog = false;
-let newProduct = {
-    name: '',
-    category: '',
-    quantity: 0,
-    price: 0
-};
-
-function editProduct(product) {
+function confirmOrder(rowData) {
     // handle edit logic here
 }
 
-function deleteProduct(product) {
-    // handle delete logic here
+function deleteOrder(rowData) {
 }
-
-function addProduct() {
-    products.push(newProduct);
-    newProduct = {
-        name: '',
-        category: '',
-        quantity: 0,
-        price: 0
-    };
-    showAddDialog = false;
-}
+    
 
 </script>
 
@@ -93,10 +46,5 @@ h1 {
 
 .action-button {
     margin-left: 3px;
-}
-.addButton {
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-top: 20px;
 }
 </style>
