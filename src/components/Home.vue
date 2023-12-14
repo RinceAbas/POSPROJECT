@@ -2,36 +2,36 @@
 
     <div class="pageBody">    
         <div class="Header">
-        <h2>Categories</h2>
+        <h1>Categories</h1>
         </div>
 
         <div class="categories">
             <div class="all">
-                <Button outlined class="border-all" raised severity="secondary" text>
+                <Button outlined class="border-all" raised severity="secondary" @click="showAll">
                     <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
                 </Button>
                 <p>All</p>
             </div>
             <div class="meals">
-                <Button outlined class="border-meals" raised severity="secondary" text>
+                <Button outlined class="border-meals" raised severity="secondary" @click="showMeals">
                     <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
                 </Button>
                 <p>Meals</p>
             </div>
             <div class="drinks">
-                <Button outlined class="border-drinks" raised severity="secondary" text>
+                <Button outlined class="border-drinks" raised severity="secondary" @click="showDrinks">
                     <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
                 </Button>
                 <p>Drinks</p>
             </div>
             <div class="snacks">
-                <Button outlined class="border-snacks" raised severity="secondary" text>
+                <Button outlined class="border-snacks" raised severity="secondary" @click="showSnacks">
                     <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
                 </Button>
                 <p>Snacks</p>
             </div>
             <div class="deserts">
-                <Button outlined class="border-deserts" raised severity="secondary" text>
+                <Button outlined class="border-deserts" raised severity="secondary" @click="showDeserts">
                     <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
                 </Button>
                 <p>Desserts</p>
@@ -98,7 +98,6 @@
     const visible = ref(false);
     const showOverlay = ref(false);
     const handlePayment = (method) => {
-        // Handle payment logic here
         console.log(`Payment method: ${method}`);
         showOverlay.value = false;
     };
@@ -178,10 +177,16 @@
             samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
         }
     ]);
+    const sortedMenuItems = computed(() => {
+            return menuItems.value.sort((a, b) => a.category.localeCompare(b.category));
+            });
 
     const orders = ref([]);
-
-
+    const menuAll = ref([]);
+    const menuMeals = ref([]);
+    const menuDrinks = ref([]);
+    const menuSnacks = ref([]);
+    const menuDesserts = ref([]);        
 
     function addToOrder(menuItem) {
         const existingOrder = orders.value.find(order => order.name === menuItem.name);
@@ -209,24 +214,28 @@
         }
         return total;
     }
-
-    function doneOrders() {
-            
-    }
-
     function clearOrders() {
         orders.value = [];
+    }
+    function showAll() {
+        menuItems.value = sortedMenuItems.value;
+    }
+    function showMeals() {
+        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Meal");
+    }
+    function showDrinks() {
+        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Drinks");
+    }
+    function showSnacks() {
+        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Snacks");
+    }
+    function showDeserts() {
+        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Deserts");
     }
     </script>
 
     <style scoped>
     .Header {
-        display: flex;
-        justify-content: left;
-        align-items: center;
-        height: 60px;
-        border-radius: 10px;
-        margin: 10px;
         margin-left: 30px;
     }
     .categories{

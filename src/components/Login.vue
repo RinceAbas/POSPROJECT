@@ -1,15 +1,21 @@
 <template>
     <div>
-        <h1>Welcome to the Login Page</h1>
-        <p>This is the login page.</p>
+        <h1>Login</h1>
+        <div>
+            <input type="text" v-model="username" placeholder="Enter Username" />
+            <input type="text" v-model="password" placeholder="Enter Password" />
+            <router-link to="/Home">
+                <button type="submit">Login</button>
+            </router-link>
+        </div>
     </div>
 </template>
 
-<script setup>
-/* Add your component-specific scripts here */ 
+<script>
+export default {
+    name: 'Login',
+};
 </script>
 
-<style scoped>
-/* Add your component-specific styles here */
-</style>
-  
+<style scoped></style>
+

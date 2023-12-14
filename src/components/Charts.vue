@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Charts</h1>
-        <Chart :type="'pie'" :data="chartData" :options="chartOptions" />
+        <Chart :type="'bar'" :data="chartData" :options="chartOptions" />
         <table>
             <thead>
                 <tr>
@@ -12,17 +12,17 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Soap</td>
+                    <td>Meals</td>
                     <td>300</td>
                     <td>$3000</td>
                 </tr>
                 <tr>
-                    <td>Lotions</td>
+                    <td>Snacks</td>
                     <td>50</td>
                     <td>$500</td>
                 </tr>
                 <tr>
-                    <td>Perfumes</td>
+                    <td>Desserts</td>
                     <td>100</td>
                     <td>$1000</td>
                 </tr>
@@ -35,12 +35,12 @@
 import Chart from 'primevue/chart';
 
 const chartData = {
-    labels: ['Soap', 'Lotions', 'Perfumes'],
+    labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
         {
-            data: [300, 50, 100],
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+            data: [30000, 50000, 10000, 20000, 40000, 50000,30000, 50000, 10000, 20000, 40000, 50000],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FF6384', '#36A2EB', '#FFCE56','#FF6384', '#36A2EB', '#FFCE56','#FF6384', '#36A2EB', '#FFCE56'],
+            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FF6384', '#36A2EB', '#FFCE56','#FF6384', '#36A2EB', '#FFCE56','#FF6384', '#36A2EB', '#FFCE56'],
         },
     ],
 };

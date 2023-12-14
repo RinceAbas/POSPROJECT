@@ -2,12 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../components/Home.vue";
 import Charts from "../components/Charts.vue";
-import Inventory from "../components/Inventory.vue";
+import Debt from "../components/Debt.vue";
 import Login from "../components/Login.vue";
-import Reviews from "../components/Reviews.vue";
+import Inventory from "../components/Inventory.vue";
 import Settings from "../components/Settings.vue";
-import TopProducts from "../components/TopProducts.vue";
-import Profile from "../components/Profile.vue";
+import Dashboard from "../components/Dashboard.vue";
 
 const routes = [
     {
@@ -16,14 +15,14 @@ const routes = [
       component: Home,
     },
     {
-      path: "/Reviews",
-      name: "Reviews",
-      component: Reviews,
+      path: "/Login",
+      name: "Login",
+      component: Login,
     },
     {
-      path: "/Charts",
-      name: "Charts",
-      component: Charts,
+      path: "/Dashboard",
+      name: "Dashboard",
+      component: Dashboard,
     },
     {
       path: "/Inventory",
@@ -31,24 +30,19 @@ const routes = [
       component: Inventory,
     },
     {
-      path: "/TopProducts",
-      name: "TopProducts",
-      component: TopProducts, 
+      path: "/Charts",
+      name: "Charts",
+      component: Charts,
+    },
+    {
+      path: "/Debt",
+      name: "Debt",
+      component: Debt,
     },
     {
       path: "/Settings",
       name: "Settings",
       component: Settings,
-    },
-    {
-      path: "/Profile",
-      name: "Profile",
-      component: Profile,
-    },
-    {
-      path: "/Login",
-      name: "Login",
-      component: Login,
     },
   ];
 

@@ -6,9 +6,14 @@ const items = [
     to: "/",
   },
   {
+    label: "Dashboard",
+    icon: "pi pi-fw pi-desktop",
+    to: "/Dashboard",
+  },
+  {
     label: "Debt",
     icon: "pi pi-cart-plus",
-    to: "/Inventory",
+    to: "/Debt",
   },
   {
     label: "Charts",
@@ -18,7 +23,7 @@ const items = [
   {
     label: "Inventory",
     icon: "pi pi-shopping-bag",
-    to: "/Reviews",
+    to: "/Inventory",
   },
   {
     label: "Settings",
