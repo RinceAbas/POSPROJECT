@@ -16,43 +16,39 @@
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
                         <div class="buttons">
-                            <Button label="Secondary" severity="secondary" raised class="addBttn" @click="showOverlay = true">Edit</Button>
-                            <Button label="Danger" severity="danger" raised class="d" @click="clearOrders(menuItems)">Delete</Button>
+                            <Button label="Secondary" severity="secondary" raised class="editBttn" @click="showOverlay = true">Edit</Button>
+                            <Button label="Danger" severity="danger" raised class="deleteBttn" @click="deleteItem(i)">Delete</Button>
                         </div>
                     </div>
                 </Panel>
-            </div>
+            </div>  
     </div>
-
-
-    <div class="overlay" v-if="showOverlay">
-        <div class="overlay-content">
-            <h2>{{ editIndex === null ? 'Add Item' : 'Update Item' }}</h2>
-            <form @submit.prevent="editIndex === null ? addReview() : updateReview()">
+    <div v-if="showOverlay" class="overlay">
+            <div class="overlay-content">
+                <h2>Add Item</h2>
                 <div class="form-group">
-                    <label for="title">Category: </label>
-                    <input type="text" id="title" v-model="titleValue" required />
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" v-model="addItem.category" />
                 </div>
                 <div class="form-group">
-                    <label for="title">Name: </label>
-                    <input type="text" id="title" v-model="titleValue" required />
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" v-model="addItem.name" />
                 </div>
                 <div class="form-group">
-                    <label for="text">Price: </label>
-                    <textarea id="text" v-model="reviewText" required></textarea>
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" v-model="addItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="stars">Upload Image: </label>
-                    <select id="stars" v-model="selectedStars" required>
-                    </select>
+                    <label for="samplepic">Sample Picture:</label>
+                    <input type="file" id="samplepic" @change="handleFileUpload" />
                 </div>
-            </form>
-            <div class="buttons">
-                <button class="close-btn" @click="showOverlay = false">Close</button>
-                <button class="add-review-btn-blue" @click="editIndex === null ? addReview() : updateReview()">{{ editIndex === null ? 'Add Review' : 'Update Review' }}</button>
+                <div class="buttons">
+                    <Button label="Save" class="saveBttn" @click="saveItem" />
+                    <Button label="Cancel" @click="cancelItem" />
+                </div>
             </div>
         </div>
-    </div>
+
 </template>
 
 <script setup>
@@ -62,7 +58,9 @@ import  Button  from "primevue/button";
 import Image  from "primevue/image";
 import Navbar from './Navbar.vue';
 
-
+function deleteItem(index) {
+    menuItems.value.splice(index, 1);
+}
 
 const menuItems = ref([
         {
@@ -139,41 +137,36 @@ const menuItems = ref([
         }
     ]);
 
-const newReview = ref({
+const addItem = ref({
     category: "",
     name: "",
     price: "",
     samplepic: ""
 });
 
+
+
 const showOverlay = ref(false);
 
-const editIndex = ref(null);
-
-function addReview() {
-    reviews.value.push(newReview.value);
-    newReview.value = { text: "", stars: "", title: "" };
-    showOverlay.value = false;
+function saveItem() {
+    menuItems.value.push(addItem.value);
+    cancelItem();
 }
 
-function editReview(index) {
-    editIndex.value = index;
-    showOverlay.value = true;
-}
 
-function updateReview() {
-    reviews.value[editIndex.value] = {
-        text: reviews.value[editIndex.value].text,
-        stars: reviews.value[editIndex.value].stars,
-        title: reviews.value[editIndex.value].title,
+function cancelItem() {
+    addItem.value = {
+        category: "",
+        name: "",
+        price: "",
+        samplepic: ""
     };
-    editIndex.value = null;
     showOverlay.value = false;
 }
-
-function deleteReview(index) {
-    reviews.value.splice(index, 1);
+function handleFileUpload(event) {
+    const file = event.target.files[0];
 }
+
 
 </script>
 
@@ -189,13 +182,20 @@ h1 {
     margin-right: 40px;
     margin-top: 20px;
 }
-.addBttn{
+.editBttn{
     margin-right: 10px;
+}
+.saveBttn{
+    margin-right: 10px;
+    margin-top: 10px;
 }
 .SortBy {
     margin-left: 20px;
 }
 
+.buttons {
+    margin-right: 10px;
+}
 
 .menuBody {
     margin-top: 20px; margin-bottom: 20px;
@@ -210,19 +210,6 @@ h1 {
     width: 400px;
     margin: 10px 20px;
 }
-.stars {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.description {
-    margin-bottom: 10px;
-}
-
-.product-title {
-    font-weight: bold;
-}
-
 
 @media (min-width: 768px) {
     .col-md-4 {
@@ -244,46 +231,6 @@ h1 {
     border-radius: 5px;
 }
 
-.add-review-btn-blue {
-    background-color: blue;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 10px;
-}
-
-.edit-review-btn {
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 5px;
-}
-
-.delete-review-btn {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-}
 
 .overlay {
     position: fixed;
@@ -302,20 +249,6 @@ h1 {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-}
-
-.close-btn {
-    margin-top: 20px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
 }
 .form-group{
     margin-top: 20px;
