@@ -1,4 +1,5 @@
 <template>
+    <Navbar/>
     <div>
         <h1>Charts</h1>
         <Chart :type="'bar'" :data="chartData" :options="chartOptions" />
@@ -33,6 +34,7 @@
 
 <script setup>
 import Chart from 'primevue/chart';
+import Navbar from './Navbar.vue';
 
 const chartData = {
     labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],

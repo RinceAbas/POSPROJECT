@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import Navbar from './Navbar.vue';
 
 const orders = [
     { orderNum: '1', transactionID: '0001', date: '10/25/23', time: '12:00nn', total: '₱60', status: 'Pending' },
@@ -20,6 +21,7 @@ const newOrdersCount = computed(() => {
 </script>
 
 <template>
+    <Navbar/>
     <div class="header">
         <h1>Dashboard</h1>
     </div>

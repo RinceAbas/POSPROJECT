@@ -3,7 +3,7 @@ const items = [
   {
     label: "Home",
     icon: "pi pi-fw pi-home",
-    to: "/",
+    to: "/Home",
   },
   {
     label: "Dashboard",

@@ -1,31 +1,38 @@
 <template>
+    <Navbar/>
     <h1>Inventory</h1>
-    <div class="addBttn">
+    <div class="addItemBttn">
         <div class="SortBy">
             <button class="add-review-btn" @click="showOverlay = true">Add Item</button>
         </div>  
     </div>
-        <div class="reviews">
-            <div class="review-container" v-for="(review, i) in reviews" :key="i">
-                <Panel :header="review.title" toggleable>
-                    <div class="review">
-                        <div class="stars">{{ review.stars }}</div>
-                        <div class="description">{{ review.text }}</div>
+    <div class="menuBody">
+    <div class="menu-container" v-for="(menuItems, i) in menuItems" :key="i">
+                <Panel :header="menuItems.category">
+                    <div class="menuItems">
+                        <div class="itemPic">
+                            <Image :src="menuItems.samplepic" alt="Item Image" width="100" height="75" />
+                        </div>
+                        <div class="name">{{ menuItems.name }}</div>
+                        <div class="price">₱{{ menuItems.price }}</div>
                         <div class="buttons">
-                            <button class="edit-review-btn" @click="editReview(i)">Edit</button>
-                            <button class="delete-review-btn" @click="deleteReview(i)">Delete</button>
+                            <Button label="Secondary" severity="secondary" raised class="addBttn" @click="showOverlay = true">Edit</Button>
+                            <Button label="Danger" severity="danger" raised class="d" @click="clearOrders(menuItems)">Delete</Button>
                         </div>
                     </div>
                 </Panel>
             </div>
-        </div> 
-
+    </div>
 
 
     <div class="overlay" v-if="showOverlay">
         <div class="overlay-content">
             <h2>{{ editIndex === null ? 'Add Item' : 'Update Item' }}</h2>
             <form @submit.prevent="editIndex === null ? addReview() : updateReview()">
+                <div class="form-group">
+                    <label for="title">Category: </label>
+                    <input type="text" id="title" v-model="titleValue" required />
+                </div>
                 <div class="form-group">
                     <label for="title">Name: </label>
                     <input type="text" id="title" v-model="titleValue" required />
@@ -51,56 +58,92 @@
 <script setup>
 import Panel from "primevue/panel";
 import { ref, computed } from "vue";
+import  Button  from "primevue/button";
+import Image  from "primevue/image";
+import Navbar from './Navbar.vue';
 
 
-const reviews = ref([
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 1",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 2",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 3",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 4",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 5",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 6",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 6",
-    },
-    {
-        text: "Price: 60",
-        stars: "",
-        title: "Product Title 6",
-    },
 
-]);
+const menuItems = ref([
+        {
+            category: "Meal",
+            name: "Adobo with Rice",
+            price: "60",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Meal",
+            name: "Afritada with Rice",
+            price: "60",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Meal",
+            name: "Mechado with Rice",
+            price: "60",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Drinks",
+            name: "Coke",
+            price: "25",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Drinks",
+            name: "Minute-Maid",
+            price: "20",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Drinks",
+            name: "Mineral Water",
+            price: "20",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Snacks",
+            name: "Rebisco",
+            price: "8",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Snacks",
+            name: "Maruya",
+            price: "10",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Snacks",
+            name: "Bread",
+            price: "10",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Desserts",
+            name: "Spaghetti",
+            price: "30",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Desserts",
+            name: "Halo-Halo",
+            price: "30",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        },
+        {
+            category: "Desserts",
+            name: "Mais Con Yelo",
+            price: "30",
+            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+        }
+    ]);
 
 const newReview = ref({
-    text: "",
-    stars: "",
-    title: "",
+    category: "",
+    name: "",
+    price: "",
+    samplepic: ""
 });
 
 const showOverlay = ref(false);
@@ -139,29 +182,31 @@ function deleteReview(index) {
 h1 {
     margin-left: 40px;
 }
-.addBttn {
+.addItemBttn {
     display: flex;
     align-items: center;
     justify-content: right;
     margin-right: 40px;
     margin-top: 20px;
 }
-
+.addBttn{
+    margin-right: 10px;
+}
 .SortBy {
     margin-left: 20px;
 }
 
 
-.reviews {
+.menuBody {
     margin-top: 20px; margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+        display: flex;
+        align-items: center;
+        flex-direction:row;
+        flex-wrap: wrap;
+        justify-content: center;
 }
 
-.review-container{
+.menu-container{
     width: 400px;
     margin: 10px 20px;
 }

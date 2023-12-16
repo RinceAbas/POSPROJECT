@@ -1,4 +1,5 @@
 <template>
+    <Navbar/>
     <div>
         <h1>Settings</h1>
 
@@ -17,6 +18,7 @@
 </template>
 
 <script setup>
+import Navbar from './Navbar.vue';
     import Image from 'primevue/image';
 </script>
 

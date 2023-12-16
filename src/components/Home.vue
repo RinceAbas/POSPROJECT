@@ -1,4 +1,5 @@
     <template>
+        <Navbar/>
 
     <div class="pageBody">    
         <div class="Header">
@@ -86,6 +87,7 @@
     </template>
 
     <script setup>
+    import Navbar from './Navbar.vue';
     import Image from 'primevue/image';
     import Button from 'primevue/button';
     import 'primeicons/primeicons.css'
