@@ -45,7 +45,7 @@
                 <Panel :header="menuItems.category">
                     <div class="menuItems">
                         <div class="itemPic">
-                            <Image :src="menuItems.samplepic" alt="Item Image" width="100" />
+                            <Image :src="menuItems.samplepic" alt="Item Image" width="100" height="75" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
@@ -76,9 +76,9 @@
         <div v-if="showOverlay" class="overlay">
             <div class="overlay-content">
                 <h3>Payment Method</h3>
-                <Button label="Cash" class="cashBttn" @click="handlePayment('cash')" />
-                <Button label="Gcash" class="onlineBttn" @click="handlePayment('online')" />
-                <Button label="Cancel" severity="danger" class="cancelCBttn" @click="showOverlay = false">Cancel</Button> 
+                <Button label="Cash" class="cashBttn" @click="showOverlay = false" />
+                <Button label="Gcash" class="onlineBttn" @click="showOverlay = false" />
+                <Button label="Cancel" severity="danger" class="cancelCBttn" @click="showOverlay = false"></Button> 
             </div>
         </div>
 
@@ -89,7 +89,7 @@
     import Image from 'primevue/image';
     import Button from 'primevue/button';
     import 'primeicons/primeicons.css'
-    import Panel from 'primevue/panel';
+    import Panel from 'primevue/panel'; 
 
 
 
@@ -98,8 +98,7 @@
     const visible = ref(false);
     const showOverlay = ref(false);
     const handlePayment = (method) => {
-        console.log(`Payment method: ${method}`);
-        showOverlay.value = false;
+        orders.value = [];
     };
 
 
