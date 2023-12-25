@@ -1,7 +1,8 @@
 <template>
     <Navbar/>
+    <div class="line"> </div>
     <div class="pageBody">
-        <h1>Debt</h1>
+        <div class="tableContainer">
         <DataTable :value="orders">
             <Column field="orderNum" header="Order Number"></Column>
             <Column field="referenceNum" header="Reference Number"></Column>
@@ -11,15 +12,16 @@
             <Column field="status" header="Status"></Column>
             <Column header="Actions">
                 <template #body="rowData">
-                    <Button icon="pi pi-info-circle" class="p-button-rounded p-button-success p-mr-2 action-button"></Button>
-                    <Button icon="pi pi-check-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="showOverlay = true"></Button>
+                    <Button icon="pi pi-info-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="showOverlay = true"></Button>
+                    <Button icon="pi pi-check-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="confirmOrder(rowData)"></Button>
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger action-button" @click="deleteOrder(rowData)"></Button>
                 </template>
             </Column>
         </DataTable>
     </div>
+</div>
 
-    <div v-if="showOverlay" class="overlay">
+    <div v-if="showOverlay">
             <div class="overlay-content">
                 <h3>Payment Method</h3>
                 <Button label="Cash" class="cashBttn" @click="handlePayment('cash')" />
@@ -34,42 +36,58 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Navbar from './Navbar.vue';
+import { ref } from 'vue';
 
-const orders = [
+const showOverlay = false;
+
+
+const orders = ref([
     { orderNum: '1', referenceNum: '0001', date: '10/25/23', time: '12:00nn', total: '₱60', status: 'Pending' },
     { orderNum: '2', referenceNum: '0002', date: '10/25/23', time: '1:00pm', total: '₱100', status: 'Pending'},
     { orderNum: '3', referenceNum: '0003', date: '10/26/23', time: '10:00am', total: '₱20', status: 'Pending' },
     { orderNum: '4', referenceNum: '0004', date: '10/27/23', time: '11:00am', total: '₱10', status: 'Done' },
-];
+]);
 
-const orderInfo = [
-    {referenceNum: '0001', items: '1x Chicken Joy, 1x Jolly Spaghetti, 1x Peach Mango Pie, 1x Regular Fries, 1x Regular Softdrinks'},
-    {referenceNum: '0002', items: '1x Chicken Joy, 1x Jolly Spaghetti, 1x Peach Mango Pie, 1x Regular Fries, 1x Regular Softdrinks'},
-    {referenceNum: '0003', items: '1x Chicken Joy, 1x Jolly Spaghetti, 1x Peach Mango Pie, 1x Regular Fries, 1x Regular Softdrinks'},
-    {referenceNum: '0004', items: '1x Chicken Joy, 1x Jolly Spaghetti, 1x Peach Mango Pie, 1x Regular Fries, 1x Regular Softdrinks'},
-]
-function confirmOrder(rowData) {
-    // handle edit logic here
-}
+const confirmOrder = (order) => {
+    const index = orders.value.findIndex((o) => o.orderNum === order.orderNum);
+    orders.value[index].status = 'Done';
+};
 
-function deleteOrder(rowData) {
+const deleteOrder = (order) => {
     if (confirm("Are you sure you want to delete this order?")) {
-        const index = orders.indexOf(rowData);
-        if (index > -1) {
-            orders.splice(index, 1);
-        }
+        const index = orders.value.findIndex((o) => o.orderNum === order.orderNum);
+        orders.value.splice(index, 1);
     }
-}
-    
-
+};
 </script>
 
 <style scoped>
-h1 {
-    margin-left: 40px;
-    margin-right: 40px;
+.line{
+    border: 2.5px solid #000000;
 }
-
+.pageBody{
+    background-color: rgba(236, 146, 174, 0.5);
+    width: 100%;
+    height: 90vh;
+    padding: 30px;
+}
+.tableContainer{
+    width: 150vh;
+    height: 450px;
+    background-color: #F7D3DE;
+    border-radius: 30px;
+    justify-content: center;
+    position: relative;
+    margin-left: 100px;
+    margin-top: 140px;
+}
+.pageBody1{
+    position: absolute;
+    justify-content: center;
+    width: 90%;
+    margin-left: 70px;
+    margin-top: 60px;
+}
 .action-button {
     margin-left: 3px;
 }

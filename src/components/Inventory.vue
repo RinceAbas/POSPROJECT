@@ -3,7 +3,7 @@
     <h1>Inventory</h1>
     <div class="addItemBttn">
         <div class="SortBy">
-            <button class="add-review-btn" @click="showOverlay = true">Add Item</button>
+            <button class="add-review-btn" @click="showAddOverlay = true">Add Item</button>
         </div>  
     </div>
     <div class="menuBody">
@@ -16,14 +16,14 @@
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
                         <div class="buttons">
-                            <Button label="Secondary" severity="secondary" raised class="editBttn" @click="showOverlay = true">Edit</Button>
+                            <Button label="Secondary" severity="secondary" raised class="editBttn" @click="editItem(i)">Edit</Button>
                             <Button label="Danger" severity="danger" raised class="deleteBttn" @click="deleteItem(i)">Delete</Button>
                         </div>
                     </div>
                 </Panel>
             </div>  
     </div>
-    <div v-if="showOverlay" class="overlay">
+    <div v-if="showAddOverlay" class="overlay">
             <div class="overlay-content">
                 <h2>Add Item</h2>
                 <div class="form-group">
@@ -48,6 +48,32 @@
                 </div>
             </div>
         </div>
+
+    <div v-if="showEditOverlay" class="overlay">
+            <div class="overlay-content">
+                <h2>Edit Item</h2>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" v-model="editedItem.category" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" v-model="editedItem.name" />
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" v-model="editedItem.price" />
+                </div>
+                <div class="form-group">
+                    <label for="samplepic">Sample Picture:</label>
+                    <input type="file" id="samplepic" @change="handleFileUpload" />
+                </div>
+                <div class="buttons">
+                    <Button label="Save" class="saveBttn" @click="saveEditedItem" />
+                    <Button label="Cancel" @click="cancelItem" />
+                </div>
+            </div>
+        </div>        
 
 </template>
 
@@ -144,15 +170,30 @@ const addItem = ref({
     samplepic: ""
 });
 
+const editedItem = ref({
+    category: "",
+    name: "",
+    price: "",
+    samplepic: ""
+});
 
+const showEditOverlay = ref(false);
+const showAddOverlay = ref(false);
 
-const showOverlay = ref(false);
+function editItem(index) {
+    editedItem.value = { ...menuItems.value[index] };
+    showEditOverlay.value = true;
+}
+
+function saveEditedItem() {
+    menuItems.value.splice(index, 1, editedItem.value);
+    cancelItem();
+}
 
 function saveItem() {
     menuItems.value.push(addItem.value);
     cancelItem();
 }
-
 
 function cancelItem() {
     addItem.value = {
@@ -161,12 +202,19 @@ function cancelItem() {
         price: "",
         samplepic: ""
     };
-    showOverlay.value = false;
+    editedItem.value = {
+        category: "",
+        name: "",
+        price: "",
+        samplepic: ""
+    };
+    showAddOverlay.value = false;
+    showEditOverlay.value = false;
 }
+
 function handleFileUpload(event) {
     const file = event.target.files[0];
 }
-
 
 </script>
 

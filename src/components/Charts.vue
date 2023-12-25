@@ -1,16 +1,21 @@
 <template>
     <Navbar/>
-    <div>
-        <h1>Charts</h1>
-        <Chart :type="'bar'" :data="chartData" :options="chartOptions" />
+    <div class="line"> </div>
+  <div class="pageBody">
+        <div class="chart">
+             <Chart :type="'bar'" :data="chartData" :options="chartOptions" />
+        </div>
+    <div></div>
+    <div class="tableContainer">
         <table>
+            <div class="tableContainer1">
             <thead>
                 <tr>
                     <th>Category</th>
                     <th>Sales</th>
                     <th>Total Income</th>
                 </tr>
-            </thead>
+            </thead>    
             <tbody>
                 <tr>
                     <td>Meals</td>
@@ -26,10 +31,12 @@
                     <td>Desserts</td>
                     <td>100</td>
                     <td>$1000</td>
-                </tr>
+                </tr>   
             </tbody>
+        </div> 
         </table>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -54,17 +61,37 @@ const chartOptions = {
 </script>
 
 <style scoped>
-h1 {
-    margin-left: 40px;
-    margin-right: 40px;
+.line{
+        border: 2.5px solid #000000;
 }
-
-table {
-    margin-top: 20px;
-    border-collapse: collapse;
+.pageBody{
+    background-color: rgba(236, 146, 174, 0.5);
     width: 100%;
+    height: 90vh;
+    padding: 30px;
 }
-
+.chart{
+    width: 1000px;
+    height: 10rem;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left: 230px;
+}
+table {
+    margin-top: 70px;
+    border-collapse: collapse;
+    width: 1100px;
+    margin-left: 50px;
+}
+.tableContainer{
+    background-color: #F7D3DE;
+    position: absolute;
+    border-radius: 30px;
+    width: 1200px;
+    height: 300px;
+    margin-left: 150px;
+    margin-top: 80px;
+}
 th,
 td {
     text-align: left;

@@ -1,10 +1,8 @@
     <template>
         <Navbar/>
+        <div class="line"> </div>
 
-    <div class="pageBody">    
-        <div class="Header">
-        <h1>Categories</h1>
-        </div>
+    <div class="pageBody">
 
         <div class="categories">
             <div class="all">
@@ -37,9 +35,6 @@
                 </Button>
                 <p>Desserts</p>
             </div>
-        </div>
-        <div class="body">
-            <h2>Menu</h2>
         </div>
         <div class="menuBody">
             <div class="menu-container" v-for="(menuItems, i) in menuItems" :key="i">
@@ -236,47 +231,55 @@
     </script>
 
     <style scoped>
+    body{
+        background-color: rgba(236, 146, 174, 0.5); 
+    }
+    .line{
+        border: 2.5px solid #000000;
+    }
     .Header {
         margin-left: 30px;
     }
     .categories{
         display: inline-flex;
-        margin-left: 100px;
+        margin-left: 70px;
+        margin-top: 50px;
     }
     .all{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 10px;
+        margin: 30px;
+        
     }
     .meals{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 10px;
+        margin: 30px;
     }
     .drinks{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 10px;
+        margin: 30px;
     }
     .snacks{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 10px;
+        margin: 30px;
     }
     .deserts{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 10px;
+        margin: 30px;
     }
     .body {
         display: flex;
@@ -294,10 +297,11 @@
         flex-direction:row;
         flex-wrap: wrap;
         justify-content: center;
+        margin-right: 20px;
     }
     .menu-container{
         width: 400px;
-        margin: 10px 20px;
+        margin: 40px 40px;
     }
     .itemPic{
         margin-bottom: 10px;
@@ -313,10 +317,10 @@
         top: 0;
         right: 0;
         padding: 10px;
-        border-radius: 5px;
-        margin-right: 9.4px;
-        margin-top: 50px;
-        margin-bottom: 10px;
+        border-radius: 10px;
+        margin-left: 100px;
+        margin-top: 70px;
+        margin-bottom: 50px;
         left: 1050px;
         bottom: 1000px;
         text-align: center;
@@ -340,7 +344,8 @@
         padding: 10px;
         border-radius: 5px;
         margin-right: 9.4px;
-        margin-top: 650px;
+        margin-left: 90px;
+        margin-top: 790px;
         margin-bottom: 10px;
         left: 1050px;
         bottom: 1000px;
@@ -352,7 +357,7 @@
         padding: 10px;
         border-radius: 5px;
         margin-right: 9.4px;
-        margin-left: 260px;
+        margin-left: 354px;
         margin-top: 665px;
         margin-bottom: 10px;
         left: 1050px;
@@ -360,10 +365,11 @@
     }
     .clearCBttn{
         margin-left: 10px;
+        margin-top: 140px;
     }
     .pageBody{
         margin-right: 450px;
-        border-radius: 10px;
+        background-color: rgba(239, 197, 210, 0.5);
     }
     .overlay {
     position: fixed;
@@ -377,15 +383,94 @@
     align-items: center;
     }
     .overlay-content {
+        width: 400px;
+        height: 150px;
         background-color: white;
         padding: 20px;
         border-radius: 5px;
         text-align: center;
     }
+    .overlay-button{
+        position: absolute;
+        margin-top:45px;
+        margin-left: 60px;
+    }
+    .payment{
+        position: absolute;
+        margin-top: -15px;
+        margin-left: -10px;
+        font-size: 18px;
+        
+    }
+    .doneCBttn{
+        background-color: white;
+        border-color: #EC92AE;
+        border-style: double;
+        border-radius: 7px;
+        border-style: solid;
+        color: #000000;
+        box-shadow: none;
+        transition: background-color 0.3s ease;
+    }
+    .doneCBttn:hover{
+    background-color: #EC92AE;
+    }
+    .clearCBttn{
+        background-color: white;
+        border-color: #EC92AE;
+        border-style: double;
+        border-radius: 7px;
+        border-style: solid;
+        color: #000000;
+        box-shadow: none;
+        transition: background-color 0.3s ease;
+    }
+    .clearCBttn:hover{
+    background-color: #EC92AE;
+    }
     .cashBttn{
         margin-right: 10px;
+        border-color: #EC92AE;
+        background-color: white;
+        color: #000000;
+        border-width: 2px;
+        transition: background-color 0.3s ease;
+    }
+    .cashBttn:hover{
+    background-color: #F7D3DE;
     }
     .onlineBttn{
         margin-right: 10px;
+        border-color: #EC92AE;
+        background-color: white;
+        color: #000000;
+        border-width: 2px;
+        transition: background-color 0.3s ease;
+    }
+    .onlineBttn:hover{
+    background-color: #F7D3DE;
+    }
+    .cancelCBttn{
+        border-color: #b91143;
+        background-color: white;
+        color: #000000;
+        border-width: 2px;
+        transition: background-color 0.3s ease;
+    }
+    .cancelCBttn:hover{
+    background-color: #b5395e;
+    }
+    .orderInfo1{
+        margin-left: 50px;
+        margin-top: 30px;
+    }
+    .orderName{
+        margin-left: 50px;
+    }
+    .orderPrice{
+        margin-left: 50px;
+    }
+    .orderQuantity{
+        margin-left: 50px;
     }
     </style>
