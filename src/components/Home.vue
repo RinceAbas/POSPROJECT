@@ -6,31 +6,31 @@
         <div class="categories">
             <div class="all">
                 <Button outlined class="border-all" raised severity="secondary" @click="showAll">
-                    <Image src="src\assets\all.jpg" alt="Image" width="100" height="80"/>
+                    <img src="src\assets\all.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>All</p>
             </div>
             <div class="meals">
                 <Button outlined class="border-meals" raised severity="secondary" @click="showMeals">
-                    <Image src="src\assets\meals.jpg" alt="Image" width="100" height="80"/>
+                    <img src="src\assets\meals.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>Meals</p>
             </div>
             <div class="drinks">
                 <Button outlined class="border-drinks" raised severity="secondary" @click="showDrinks">
-                    <Image src="src\assets\drinks.jpg" alt="Image" width="100" height="80"/>
+                    <img src="src\assets\drinks.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>Drinks</p>
             </div>
             <div class="snacks">
                 <Button outlined class="border-snacks" raised severity="secondary" @click="showSnacks">
-                    <Image src="src\assets\snacks.jpg" alt="Image" width="100" height="80" />
+                    <img src="src\assets\snacks.jpg" alt="Image" width="100" height="80" />
                 </Button>
                 <p>Snacks</p>
             </div>
             <div class="deserts">
                 <Button outlined class="border-deserts" raised severity="secondary" @click="showDeserts">
-                    <Image src="src\assets\desserts.jpg" alt="Image" width="100" height="80" />
+                    <img src="src\assets\desserts.jpg" alt="Image" width="100" height="80" />
                 </Button>
                 <p>Desserts</p>
             </div>
@@ -42,7 +42,7 @@
                 <Panel :header="menuItems.category">
                     <div class="menuItems">
                         <div class="itemPic">
-                            <Image :src="'src/assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
+                            <img :src="'src/assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
