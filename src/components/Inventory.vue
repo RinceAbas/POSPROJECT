@@ -14,7 +14,7 @@
                 <Panel :header="menuItems.category">
                     <div class="menuItems">
                         <div class="itemPic">
-                            <img :src="'../src/assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
+                            <img :src="'../assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
