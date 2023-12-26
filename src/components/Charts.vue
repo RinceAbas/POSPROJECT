@@ -1,7 +1,7 @@
 <template>
     <Navbar/>
     <div class="line"> </div>
-  <div class="pageBody">
+    <div class="pageBody">
         <div class="chart">
              <Chart :type="'bar'" :data="chartData" :options="chartOptions" />
         </div>
@@ -61,6 +61,11 @@ const chartOptions = {
 </script>
 
 <style scoped>
+h1 {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 .line{
         border: 2.5px solid #000000;
 }

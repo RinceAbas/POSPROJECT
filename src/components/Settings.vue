@@ -2,24 +2,26 @@
     <Navbar/>
     <div class="line"> </div>
     <div class="pageBody">
+
         <div class="userBox">
             <h2 class="adminTxt">Admin</h2>
             <div class="logo">
-            <Image src="https://upload.wikimedia.org/wikipedia/en/6/67/University_of_the_Immaculate_Conception_Logo.png" alt="Image" width="95" height="95" />
+            <Image src="src\assets\POSLOGO.jpg" alt="Image" width="100" height="80"/>
             </div>
         </div>
         <div class="settings">
-            <i class="pi pi.security" style="font-size: 1.5rem">Security</i><br>
-            <i class="pi pi.theme" style="font-size: 1.5rem">Theme</i><br>
-            <i class="pi pi.profile" style="font-size: 1.5rem">Profile</i><br>
-            <i class="pi pi.logout" style="font-size: 1.5rem">Log Out</i><br>
+            <i class=" pi" style="font-size: 1.5rem">Security</i>  <br>
+            <i class=" pi" style="font-size: 1.5rem">Theme</i>  <br>
+            <i class="pi" style="font-size: 1.5rem">Profile</i>  <br>
+            <i class="pi" style="font-size: 1.5rem">Log Out</i> 
+
         </div>
     </div>
 </template>
 
 <script setup>
 import Navbar from './Navbar.vue';
-import Image from 'primevue/image';
+    import Image from 'primevue/image';
 </script>
 
 <style scoped>
@@ -31,14 +33,14 @@ import Image from 'primevue/image';
 .pageBody{
     background-color: rgba(236, 146, 174, 0.5);
     width: 100%;
-    height: 90vh;
+    height: 100%;
     padding: 30px;
 }
 .settings {
     position: relative;
     display: inline-block;
-    justify-content: space-between;
-    margin-left: 100px;
+    justify-content: center;
+    margin-left: 30px;
     margin-right: 80px;
 
 }

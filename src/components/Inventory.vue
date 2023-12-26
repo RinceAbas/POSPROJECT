@@ -1,6 +1,9 @@
 <template>
     <Navbar/>
-    <h1>Inventory</h1>
+    <div class="line"> </div>
+    <div class="pageBody">
+    <div class="pageBody1">
+    <h3 class="inventoryContainer">Inventory</h3>
     <div class="addItemBttn">
         <div class="SortBy">
             <button class="add-review-btn" @click="showAddOverlay = true">Add Item</button>
@@ -11,7 +14,7 @@
                 <Panel :header="menuItems.category">
                     <div class="menuItems">
                         <div class="itemPic">
-                            <Image :src="menuItems.samplepic" alt="Item Image" width="100" height="75" />
+                            <Image :src="'src/assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
@@ -21,11 +24,14 @@
                         </div>
                     </div>
                 </Panel>
-            </div>  
+                </div>  
+        </div>
     </div>
+</div>
     <div v-if="showAddOverlay" class="overlay">
             <div class="overlay-content">
                 <h2>Add Item</h2>
+                <div class="overlay-content1">
                 <div class="form-group">
                     <label for="category">Category:</label>
                     <input type="text" id="category" v-model="addItem.category" />
@@ -48,10 +54,12 @@
                 </div>
             </div>
         </div>
+        </div>
 
     <div v-if="showEditOverlay" class="overlay">
             <div class="overlay-content">
                 <h2>Edit Item</h2>
+                <div class="overlay-content1">
                 <div class="form-group">
                     <label for="category">Category:</label>
                     <input type="text" id="category" v-model="editedItem.category" />
@@ -73,7 +81,8 @@
                     <Button label="Cancel" @click="cancelItem" />
                 </div>
             </div>
-        </div>        
+        </div>    
+    </div>    
 
 </template>
 
@@ -93,73 +102,73 @@ const menuItems = ref([
             category: "Meal",
             name: "Adobo with Rice",
             price: "60",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "adobo.jpg",
         },
         {
             category: "Meal",
             name: "Afritada with Rice",
             price: "60",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "afritada.jpg",
         },
         {
             category: "Meal",
             name: "Mechado with Rice",
             price: "60",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "mechado.jpg",
         },
         {
             category: "Drinks",
             name: "Coke",
             price: "25",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "coke.jpg",
         },
         {
             category: "Drinks",
             name: "Minute-Maid",
             price: "20",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "minute-maid.jpg",
         },
         {
             category: "Drinks",
             name: "Mineral Water",
             price: "20",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "mineral-water.jpg",
         },
         {
             category: "Snacks",
             name: "Rebisco",
             price: "8",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "rebisco.jpg",
         },
         {
             category: "Snacks",
             name: "Maruya",
             price: "10",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "maruya.jpg",
         },
         {
             category: "Snacks",
             name: "Bread",
             price: "10",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "bread.jpg",
         },
         {
             category: "Desserts",
             name: "Spaghetti",
             price: "30",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "spaghetti.jpg",
         },
         {
             category: "Desserts",
             name: "Halo-Halo",
             price: "30",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "halo-halo.jpg",
         },
         {
             category: "Desserts",
             name: "Mais Con Yelo",
             price: "30",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "mais.jpg",
         }
     ]);
 
@@ -185,7 +194,7 @@ function editItem(index) {
     showEditOverlay.value = true;
 }
 
-function saveEditedItem() {
+function saveEditedItem(index) {
     menuItems.value.splice(index, 1, editedItem.value);
     cancelItem();
 }
@@ -220,7 +229,11 @@ function handleFileUpload(event) {
 
 <style scoped>
 
-h1 {
+.line{
+    border: 2.5px solid #000000;
+}
+
+h3 {
     margin-left: 40px;
 }
 .addItemBttn {
@@ -267,18 +280,26 @@ h1 {
 }
 
 .add-review-btn {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
+    position: relative;
+    width: 120px;
+    height: 40px;
+    background-color: #F7D3DE;
+    color: rgb(0, 0, 0);
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    margin-bottom: -20px;
+    margin-left: -100px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
 }
 
+.add-review-btn:hover{
+    background-color: #EC92AE;
+}
 
 .overlay {
     position: fixed;
@@ -286,19 +307,47 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: none;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .overlay-content {
-    background-color: white;
+    width: 450px;
+    height: 370px;
+    background-color: #EC92AE;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    align-items: center;
+}
+.overlay-content1{
+    position: relative;
+    margin-top: 40px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100px;
 }
 .form-group{
     margin-top: 20px;
+}
+.pageBody{
+    background-color: rgba(236, 146, 174, 0.5);
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+}
+.pageBody1{ 
+    position: relative;
+    width: 93%;
+    height: 95%;
+    background-color: #F7D3DE;
+    border-radius: 30px;
+    margin-left: 50px;
+}
+.inventoryContainer{
+    position: absolute;
+    margin-left: 20px;
 }
 </style>

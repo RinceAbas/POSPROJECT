@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="logoContainer">
-        <Image src="C:\Users\Abas Laptop\Desktop\POS\POS\src\assets\POSLOGO.jpg" alt="Image" width="250" />
+        <Image src="src\assets\POSLOGO.jpg" alt="Image" width="250" />
         </div> 
         <div class="formContainer">
             <div class="inputContainer">

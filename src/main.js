@@ -8,7 +8,7 @@ import 'primeicons/primeicons.css';
 import PrimeVue from "primevue/config";
 import Menubar from "primevue/menubar";
 import router from "./router";
-
+import Image from 'primevue/image';
 
 
 
@@ -16,4 +16,5 @@ createApp(App)
 .use(router)
 .use(PrimeVue, { ripple: true })
 .component("Menubar", Menubar)
+.component('Image', Image)
 .mount('#app')

@@ -1,47 +1,48 @@
     <template>
         <Navbar/>
         <div class="line"> </div>
-
-    <div class="pageBody">
+    <div class="pageBody">   
 
         <div class="categories">
             <div class="all">
                 <Button outlined class="border-all" raised severity="secondary" @click="showAll">
-                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                    <Image src="src\assets\all.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>All</p>
             </div>
             <div class="meals">
                 <Button outlined class="border-meals" raised severity="secondary" @click="showMeals">
-                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                    <Image src="src\assets\meals.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>Meals</p>
             </div>
             <div class="drinks">
                 <Button outlined class="border-drinks" raised severity="secondary" @click="showDrinks">
-                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                    <Image src="src\assets\drinks.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>Drinks</p>
             </div>
             <div class="snacks">
                 <Button outlined class="border-snacks" raised severity="secondary" @click="showSnacks">
-                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                    <Image src="src\assets\snacks.jpg" alt="Image" width="100" height="80" />
                 </Button>
                 <p>Snacks</p>
             </div>
             <div class="deserts">
                 <Button outlined class="border-deserts" raised severity="secondary" @click="showDeserts">
-                    <Image src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg" alt="Image" width="100" />
+                    <Image src="src\assets\desserts.jpg" alt="Image" width="100" height="80" />
                 </Button>
                 <p>Desserts</p>
             </div>
+        </div>
+        <div class="body">
         </div>
         <div class="menuBody">
             <div class="menu-container" v-for="(menuItems, i) in menuItems" :key="i">
                 <Panel :header="menuItems.category">
                     <div class="menuItems">
                         <div class="itemPic">
-                            <Image :src="menuItems.samplepic" alt="Item Image" width="100" height="75" />
+                            <Image :src="'src/assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
@@ -104,73 +105,73 @@
             category: "Meal",
             name: "Adobo with Rice",
             price: "60",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "adobo.jpg",
         },
         {
             category: "Meal",
             name: "Afritada with Rice",
             price: "60",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "afritada.jpg",
         },
         {
             category: "Meal",
             name: "Mechado with Rice",
             price: "60",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "mechado.jpg",
         },
         {
             category: "Drinks",
             name: "Coke",
             price: "25",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "coke.jpg",
         },
         {
             category: "Drinks",
             name: "Minute-Maid",
             price: "20",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "minute-maid.jpg",
         },
         {
             category: "Drinks",
             name: "Mineral Water",
             price: "20",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "mineral-water.jpg",
         },
         {
             category: "Snacks",
             name: "Rebisco",
             price: "8",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "rebisco.jpg",
         },
         {
             category: "Snacks",
             name: "Maruya",
             price: "10",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "maruya.jpg",
         },
         {
             category: "Snacks",
             name: "Bread",
             price: "10",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "bread.jpg",
         },
         {
             category: "Desserts",
             name: "Spaghetti",
             price: "30",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "spaghetti.jpg",
         },
         {
             category: "Desserts",
             name: "Halo-Halo",
             price: "30",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "halo-halo.jpg",
         },
         {
             category: "Desserts",
             name: "Mais Con Yelo",
             price: "30",
-            samplepic: "https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg",
+            samplepic: "mais.jpg",
         }
     ]);
     const sortedMenuItems = computed(() => {
@@ -234,52 +235,53 @@
     body{
         background-color: rgba(236, 146, 174, 0.5); 
     }
+    .pageBody{
+        margin-right: 450px;
+        background-color: rgba(239, 197, 210, 0.5);
+    }
     .line{
         border: 2.5px solid #000000;
-    }
-    .Header {
-        margin-left: 30px;
+        margin-bottom: 10px
     }
     .categories{
         display: inline-flex;
-        margin-left: 70px;
-        margin-top: 50px;
+        margin-left: 100px;
+        margin-top: 10px;
     }
     .all{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 30px;
-        
+        margin: 10px;
     }
     .meals{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 30px;
+        margin: 10px;
     }
     .drinks{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 30px;
+        margin: 10px;
     }
     .snacks{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 30px;
+        margin: 10px;
     }
     .deserts{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 30px;
+        margin: 10px;
     }
     .body {
         display: flex;
@@ -297,11 +299,10 @@
         flex-direction:row;
         flex-wrap: wrap;
         justify-content: center;
-        margin-right: 20px;
     }
     .menu-container{
         width: 400px;
-        margin: 40px 40px;
+        margin: 10px 20px;
     }
     .itemPic{
         margin-bottom: 10px;
@@ -317,10 +318,10 @@
         top: 0;
         right: 0;
         padding: 10px;
-        border-radius: 10px;
-        margin-left: 100px;
-        margin-top: 70px;
-        margin-bottom: 50px;
+        border-radius: 5px;
+        margin-right: 9.4px;
+        margin-top: 50px;
+        margin-bottom: 10px;
         left: 1050px;
         bottom: 1000px;
         text-align: center;
@@ -344,8 +345,7 @@
         padding: 10px;
         border-radius: 5px;
         margin-right: 9.4px;
-        margin-left: 90px;
-        margin-top: 790px;
+        margin-top: 650px;
         margin-bottom: 10px;
         left: 1050px;
         bottom: 1000px;
@@ -357,7 +357,7 @@
         padding: 10px;
         border-radius: 5px;
         margin-right: 9.4px;
-        margin-left: 354px;
+        margin-left: 260px;
         margin-top: 665px;
         margin-bottom: 10px;
         left: 1050px;
@@ -365,11 +365,10 @@
     }
     .clearCBttn{
         margin-left: 10px;
-        margin-top: 140px;
     }
     .pageBody{
         margin-right: 450px;
-        background-color: rgba(239, 197, 210, 0.5);
+        border-radius: 10px;
     }
     .overlay {
     position: fixed;
@@ -383,24 +382,10 @@
     align-items: center;
     }
     .overlay-content {
-        width: 400px;
-        height: 150px;
         background-color: white;
         padding: 20px;
         border-radius: 5px;
         text-align: center;
-    }
-    .overlay-button{
-        position: absolute;
-        margin-top:45px;
-        margin-left: 60px;
-    }
-    .payment{
-        position: absolute;
-        margin-top: -15px;
-        margin-left: -10px;
-        font-size: 18px;
-        
     }
     .doneCBttn{
         background-color: white;
@@ -430,14 +415,19 @@
     }
     .cashBttn{
         margin-right: 10px;
-        border-color: #EC92AE;
+    }
+    .onlineBttn{
+        margin-right: 10px;
+    }
+    .cancelCBttn{
+        border-color: #b91143;
         background-color: white;
         color: #000000;
         border-width: 2px;
         transition: background-color 0.3s ease;
     }
-    .cashBttn:hover{
-    background-color: #F7D3DE;
+    .cancelCBttn:hover{
+    background-color: #b5395e;
     }
     .onlineBttn{
         margin-right: 10px;
@@ -450,27 +440,15 @@
     .onlineBttn:hover{
     background-color: #F7D3DE;
     }
-    .cancelCBttn{
-        border-color: #b91143;
+    .cashBttn{
+        margin-right: 10px;
+        border-color: #EC92AE;
         background-color: white;
         color: #000000;
         border-width: 2px;
         transition: background-color 0.3s ease;
     }
-    .cancelCBttn:hover{
-    background-color: #b5395e;
-    }
-    .orderInfo1{
-        margin-left: 50px;
-        margin-top: 30px;
-    }
-    .orderName{
-        margin-left: 50px;
-    }
-    .orderPrice{
-        margin-left: 50px;
-    }
-    .orderQuantity{
-        margin-left: 50px;
+    .cashBttn:hover{
+    background-color: #F7D3DE;
     }
     </style>
