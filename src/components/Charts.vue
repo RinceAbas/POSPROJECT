@@ -31,7 +31,12 @@
                     <td>Desserts</td>
                     <td>100</td>
                     <td>$1000</td>
-                </tr>   
+                </tr>
+                <tr>
+                    <td>Drinks</td>
+                    <td>200</td>
+                    <td>$2000</td>
+                </tr>
             </tbody>
         </div> 
         </table>
