@@ -44,7 +44,7 @@ import Chart from 'primevue/chart';
 import Navbar from './Navbar.vue';
 
 const chartData = {
-    labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
         {
             data: [30000, 50000, 10000, 20000, 40000, 50000,30000, 50000, 10000, 20000, 40000, 50000],
