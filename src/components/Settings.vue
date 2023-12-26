@@ -6,7 +6,7 @@
         <div class="userBox">
             <h2 class="adminTxt">Admin</h2>
             <div class="logo">
-            <img src="src\assets\POSLOGO.jpg" alt="Image" width="100" height="80"/>
+            <img src="../assets/POSLOGO.jpg" alt="Image" width="100" height="80"/>
             </div>
         </div>
         <div class="settings">
