@@ -5,13 +5,25 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Navbar from './Navbar.vue';
 
-const orders = ref([
-    { orderNum: '1', transactionID: '0001', date: '10/25/23', time: '12:00nn', total: '₱60', status: 'Pending' },
-    { orderNum: '2', transactionID: '0002', date: '10/25/23', time: '1:00pm', total: '₱100', status: 'Pending'},
-    { orderNum: '3', transactionID: '0003', date: '10/26/23', time: '10:00am', total: '₱20', status: 'Pending' },
-    { orderNum: '4', transactionID: '0004', date: '10/27/23', time: '11:00am', total: '₱10', status: 'Done' },
-]);
+const showOverlay = ref(false);
 
+const orders = ref([
+    { orderNum: '1', transactionID: '0001', date: '10/25/23', time: '12:00nn', total: '₱60', status: 'Pending', items: [
+        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
+    ] },
+    { orderNum: '2', transactionID: '0002', date: '10/25/23', time: '1:00pm', total: '₱120', status: 'Pending', items: [
+        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
+        {name: 'Afritada with Rice', quantity: '1', price: '₱60'},
+    ]},
+    { orderNum: '3', transactionID: '0003', date: '10/26/23', time: '10:00am', total: '₱180', status: 'Pending', items: [
+        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
+        {name: 'Afritada with Rice', quantity: '1', price: '₱60'},
+        {name: 'Mechado with Rice', quantity: '1', price: '₱60'},
+    ]},
+    { orderNum: '4', transactionID: '0004', date: '10/27/23', time: '11:00am', total: '₱60', status: 'Done', items: [
+        {name: 'Mechado with Rice', quantity: '1', price: '₱60'},
+    ] },
+]);
 const calculateTotal = computed(() => {
     return orders.value.reduce((acc, order) => acc + parseFloat(order.total.replace('₱', '')), 0);
 });
@@ -65,7 +77,7 @@ const deleteOrder = (index) => {
             <Column field="status" header="Status"></Column>
             <Column header="Actions">
                 <template #body="rowData">
-                    <Button icon="pi pi-info-circle" class="p-button-rounded p-button-success p-mr-2 action-button"></Button>
+                    <Button icon="pi pi-info-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="showOverlay=true; orderIndex=rowData.index"></Button>
                     <Button icon="pi pi-check-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="doneOrder(rowData.index)"></Button>
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger action-button" @click="deleteOrder(rowData.index)"></Button>
                 </template>
@@ -74,6 +86,22 @@ const deleteOrder = (index) => {
     </div>
 </div>
 </div>
+<div v-if="showOverlay" class="overlay">
+            <div class="overlay-content">
+                <h3>Order Info</h3>
+                <div class="form-group">
+                    <label for="item">Items:</label>
+                    <ul>
+                        <li v-for="item in orders[orderIndex].items" :key="item.name">
+                            {{ item.name }} - {{ item.quantity }} - {{ item.price }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="buttons">
+                    <Button label="Cancel" @click="showOverlay=false" />
+                </div>
+            </div>
+        </div>
 </template>
 
 <style scoped>
@@ -140,4 +168,23 @@ const deleteOrder = (index) => {
 .bodyHeader{
     margin-left: 30px;
 }
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .overlay-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
 </style>
