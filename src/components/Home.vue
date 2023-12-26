@@ -6,31 +6,31 @@
         <div class="categories">
             <div class="all">
                 <Button outlined class="border-all" raised severity="secondary" @click="showAll">
-                    <img src="src\assets\all.jpg" alt="Image" width="100" height="80"/>
+                    <img src="../assets/all.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>All</p>
             </div>
             <div class="meals">
                 <Button outlined class="border-meals" raised severity="secondary" @click="showMeals">
-                    <img src="src\assets\meals.jpg" alt="Image" width="100" height="80"/>
+                    <img src="../assets/meals.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>Meals</p>
             </div>
             <div class="drinks">
                 <Button outlined class="border-drinks" raised severity="secondary" @click="showDrinks">
-                    <img src="src\assets\drinks.jpg" alt="Image" width="100" height="80"/>
+                    <img src="../assets/drinks.jpg" alt="Image" width="100" height="80"/>
                 </Button>
                 <p>Drinks</p>
             </div>
             <div class="snacks">
                 <Button outlined class="border-snacks" raised severity="secondary" @click="showSnacks">
-                    <img src="src\assets\snacks.jpg" alt="Image" width="100" height="80" />
+                    <img src="../assets/snacks.jpg" alt="Image" width="100" height="80" />
                 </Button>
                 <p>Snacks</p>
             </div>
             <div class="deserts">
                 <Button outlined class="border-deserts" raised severity="secondary" @click="showDeserts">
-                    <img src="src\assets\desserts.jpg" alt="Image" width="100" height="80" />
+                    <img src="../assets/desserts.jpg" alt="Image" width="100" height="80" />
                 </Button>
                 <p>Desserts</p>
             </div>
