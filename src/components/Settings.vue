@@ -10,18 +10,25 @@
             </div>
         </div>
         <div class="settings">
-            <i class=" pi" style="font-size: 1.5rem">Security</i>  <br>
-            <i class=" pi" style="font-size: 1.5rem">Theme</i>  <br>
-            <i class="pi" style="font-size: 1.5rem">Profile</i>  <br>
-            <i class="pi" style="font-size: 1.5rem">Log Out</i> 
+            <Button class ="buttons" label="Theme" severity="secondary" text/>  <br>
+            <Button class ="buttons" label="Profile" severity="secondary" text/>  <br>
+            <Button class ="buttons" label="Log Out" severity="secondary" text @click="logout"/> 
 
         </div>
-    </div>
+    </div>z
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import Navbar from './Navbar.vue';
-    import Image from 'primevue/image';
+import Image from 'primevue/image';
+import Button from 'primevue/button';
+
+const router = useRouter();
+
+const logout = () => {
+  router.push('/');
+};
 </script>
 
 <style scoped>
@@ -34,22 +41,11 @@ import Navbar from './Navbar.vue';
     background-color: rgba(236, 146, 174, 0.5);
     width: 100%;
     height: 100%;
-    padding: 30px;
-}
-.settings {
-    position: relative;
-    display: inline-block;
-    justify-content: center;
-    margin-left: 30px;
-    margin-right: 80px;
-
+    padding: 100px;
 }
 h1{
     margin-left: 40px;
     margin-right: 40px
-}
-.pi{
-    margin-top: 20px;
 }
 .adminTxt{
     position: absolute;
@@ -63,7 +59,7 @@ h1{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 33.5rem;
+    margin-left: 30%;
     margin-top: 80px;
 }  
 .logo{
@@ -71,20 +67,27 @@ h1{
     margin-left: 230px;
 }  
 .settings {
-    position: relative;
-    display: inline-block;
-    justify-content: space-between;
-    margin-left: 690px;
+    margin-left: 550px;
     margin-right: 80px;
     margin-top: 50px;
 }
-.pi{
-    display: flex;
-    justify-content: center;
-    position: relative;
-    font-family: 'Inter', sans-serif;
-    margin-left: 25px;;
-    margin-top: 35px;
+
+.buttons{
+        display: flex;
+        justify-content: center;
+        position: relative;
+        align-items: center;
+    flex-direction: column;
+        font-family: 'Inter', sans-serif;
+        border-style: double;
+        border-radius: 7px;
+        border-style: solid;
+        color: #000000;
+        box-shadow: none;
+        transition: background-color 0.3s ease;
+    }
+.buttons:hover{
+    background-color: #EC92AE;
 }
 </style>
   
