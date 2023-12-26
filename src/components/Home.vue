@@ -42,7 +42,7 @@
                 <Panel :header="menuItems.category">
                     <div class="menuItems">
                         <div class="itemPic">
-                            <img :src="menuItems.samplepic" alt="Image" width="100" height="80" />
+                            <img :src="'../src/assets/' + menuItems.samplepic" alt="Image" width="100" height="80" />
                         </div>
                         <div class="name">{{ menuItems.name }}</div>
                         <div class="price">₱{{ menuItems.price }}</div>
@@ -105,73 +105,73 @@
             category: "Meal",
             name: "Adobo with Rice",
             price: "60",
-            samplepic: "../src/assets/adobo.jpg",
+            samplepic: "adobo.jpg",
         },
         {
             category: "Meal",
             name: "Afritada with Rice",
             price: "60",
-            samplepic: "../src/assets/afritada.jpg",
+            samplepic: "afritada.jpg",
         },
         {
             category: "Meal",
             name: "Mechado with Rice",
             price: "60",
-            samplepic: "../src/assets/mechado.jpg",
+            samplepic: "mechado.jpg",
         },
         {
             category: "Drinks",
             name: "Coke",
             price: "25",
-            samplepic: "../src/assets/coke.jpg",
+            samplepic: "coke.jpg",
         },
         {
             category: "Drinks",
             name: "Minute-Maid",
             price: "20",
-            samplepic: "../src/assets/minute-maid.jpg",
+            samplepic: "minute-maid.jpg",
         },
         {
             category: "Drinks",
             name: "Mineral Water",
             price: "20",
-            samplepic: "../src/assets/mineral-water.jpg",
+            samplepic: "mineral-water.jpg",
         },
         {
             category: "Snacks",
             name: "Rebisco",
             price: "8",
-            samplepic: "../src/assets/rebisco.jpg",
+            samplepic: "rebisco.jpg",
         },
         {
             category: "Snacks",
             name: "Maruya",
             price: "10",
-            samplepic: "../src/assets/maruya.jpg",
+            samplepic: "maruya.jpg",
         },
         {
             category: "Snacks",
             name: "Bread",
             price: "10",
-            samplepic: "../src/assets/bread.jpg",
+            samplepic: "bread.jpg",
         },
         {
             category: "Desserts",
             name: "Spaghetti",
             price: "30",
-            samplepic: "../src/assets/spaghetti.jpg",
+            samplepic: "spaghetti.jpg",
         },
         {
             category: "Desserts",
             name: "Halo-Halo",
             price: "30",
-            samplepic: "../src/assets/halo-halo.jpg",
+            samplepic: "halo-halo.jpg",
         },
         {
             category: "Desserts",
             name: "Mais Con Yelo",
             price: "30",
-            samplepic: "../src/assets/mais.jpg",
+            samplepic: "mais.jpg",
         }
     ]);
     const sortedMenuItems = computed(() => {
