@@ -5,8 +5,8 @@
         </div> 
         <div class="formContainer">
             <div class="inputContainer">
-            <input type="text" v-model="username" placeholder="Enter Username" />
-            <input type="password" v-model="password" placeholder="Enter Password" />
+            <input id="user" type="text" v-model="username" placeholder="Enter Username" />
+            <input id="pass" type="password" v-model="password" placeholder="Enter Password" />
             
             <div class="loginContainer" @click="login">
             <button type="submit"  class="button">Login</button>

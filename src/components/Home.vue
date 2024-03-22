@@ -227,7 +227,7 @@
         menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Snacks");
     }
     function showDeserts() {
-        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Deserts");
+        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Desserts");
     }
     </script>
 
