@@ -1,15 +1,15 @@
 <template>
-    <div>
+    <div class="">
         <div class="logoContainer">
-        <img src="../assets/POSLOGO.jpg" alt="Image" width="250" />
+        <img src="../assets/POSLOGO.png" alt="Image" width="250" class="logoImage"/>
         </div> 
         <div class="formContainer">
             <div class="inputContainer">
             <input id="user" type="text" v-model="username" placeholder="Enter Username" />
             <input id="pass" type="password" v-model="password" placeholder="Enter Password" />
-            
-            <div class="loginContainer" @click="login">
-            <button type="submit"  class="button">Login</button>
+                
+            <div class="loginContainer">
+            <button type="submit"  class="button" @click="login">Login</button>
             </div>
             </div>
         </div>
@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import Image from 'primevue/image';
 
+import axios from 'axios';
 
 export default {
     name: 'Login',
@@ -29,16 +29,29 @@ export default {
         };
     },
     methods: {
-        login() {
-            // Perform login verification here
-            if (this.username === 'admin' && this.password === 'password') {
-                // Redirect to Home page if login is successful
-                this.$router.push('/Home');
-            } else {
-                // Show error message if login is unsuccessful
-                alert('Invalid username or password');
-            }
-        },
+        async login() {
+    try {
+        const response = await axios.post('http://localhost:5173/cashier/', {
+        username: this.username,
+        password: this.password,
+        });
+
+
+        // Check the status code of the response
+        if (response.status === 200) {
+            // Redirect to Home page if login is successful
+            this.$router.push('/Home');
+        } else {
+            // Show error message if login is unsuccessful
+            alert('Login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        // Handle any error that occurs during the request
+        console.error(error);
+        alert('An error occurred during login');
+    }
+},
+
     },
 };
 </script>
@@ -49,9 +62,8 @@ export default {
     justify-content: center;
     display: flex;
     align-items: center;
-    width: 300px;
+    width: 100%; /* Adjust the width to fit the container */
     height: 300px;   
-    margin-left: 35rem;
     margin-top: 50px;
 }
 .formContainer{
@@ -79,6 +91,9 @@ export default {
 
 .inputContainer input::placeholder{
     color: black;
+}
+.logoImage {
+    border-radius: 50px;
 }
 .loginContainer{
     display: flex;

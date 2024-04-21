@@ -6,7 +6,7 @@
         <div class="userBox">
             <h2 class="adminTxt">Admin</h2>
             <div class="logo">
-            <img src="../assets/POSLOGO.jpg" alt="Image" width="100" height="80"/>
+            <img src="../assets/POSLOGO.png" alt="Image" width="100" height="80"/>
             </div>
         </div>
         <div class="settings">
@@ -88,6 +88,9 @@ h1{
     }
 .buttons:hover{
     background-color: #EC92AE;
+}
+.img{
+    border-radius: 50px;
 }
 </style>
   

@@ -55,6 +55,10 @@
             </div>
             </div>
         </div>
+        <div class="doneIcon">
+            <Button icon="pi pi-check-square" class="doneOrderBttn" style="font-size: 100rem" @click="showOrderBox = true"/>
+        </div>
+        <div v-if="showOrderBox" class="orderBox">
         <div class="totalBoxTop"><h1>Orders</h1></div>
         <div class="orderInfo">
                     <div v-for="(order, index) in orders" :key="index">
@@ -63,18 +67,19 @@
                         <div>{{ order.quantity }}</div>
                     </div>
                 </div>
-
         <div class="calculateTotal"><h2>Total: ₱{{ calculateTotal() }}</h2></div>
         <div class="bottomBttn">
             <Button label="Secondary" severity="secondary" raised class="doneCBttn" @click="showOverlay = true">Done</Button>
             <Button label="Danger" severity="danger" raised class="clearCBttn" @click="clearOrders(menuItems)">Clear</Button>
+            <Button label="Danger" severity="danger" raised class="clearCBttn" @click="showOrderBox = false">Cancel</Button>
         </div>        
+        </div>
 
         <div v-if="showOverlay" class="overlay">
             <div class="overlay-content">
                 <h3>Payment Method</h3>
-                <Button label="Cash" class="cashBttn" @click="showOverlay = false" />
-                <Button label="Gcash" class="onlineBttn" @click="showOverlay = false" />
+                <Button label="Cash" class="cashBttn" @click="doneTransaction" />
+                <Button label="Gcash" class="onlineBttn" @click="doneTransaction" />
                 <Button label="Cancel" severity="danger" class="cancelCBttn" @click="showOverlay = false"></Button> 
             </div>
         </div>
@@ -95,6 +100,7 @@
 
     const visible = ref(false);
     const showOverlay = ref(false);
+    const showOrderBox = ref(false);
     const handlePayment = (method) => {
         orders.value = [];
     };
@@ -179,11 +185,11 @@
             });
 
     const orders = ref([]);
-    const menuAll = ref([]);
-    const menuMeals = ref([]);
-    const menuDrinks = ref([]);
-    const menuSnacks = ref([]);
-    const menuDesserts = ref([]);        
+    
+    function doneTransaction() {
+        showOverlay.value = false;
+        orders.value = [];
+    }
 
     function addToOrder(menuItem) {
         const existingOrder = orders.value.find(order => order.name === menuItem.name);
@@ -244,8 +250,9 @@
         margin-bottom: 10px
     }
     .categories{
-        display: inline-flex;
-        margin-left: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-top: 10px;
     }
     .all{
@@ -293,7 +300,7 @@
         margin-left: 30px;
     }
     .menuBody{
-        margin-top: 20px; margin-bottom: 20px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
         flex-direction:row;
@@ -313,63 +320,43 @@
         margin-top: 10px;
         margin-right: 5px;
     }
-    .totalBoxTop{
+    
+    .orderBox {
         position: fixed;
-        top: 0;
-        right: 0;
-        padding: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 40px; /* Increase padding for bigger size */
+        margin: 20px;
+        border: 1px solid #ccc;
         border-radius: 5px;
-        margin-right: 9.4px;
-        margin-top: 50px;
-        margin-bottom: 10px;
-        left: 1050px;
-        bottom: 1000px;
+        background-color: white; /* Adjust background color */
+    }
+
+    .totalBoxTop {
         text-align: center;
     }
-    .orderInfo{
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding: 10px;
-        border-radius: 5px;
-        margin-right: 9.4px;
-        margin-top: 130px;
-        margin-bottom: 10px;
-        left: 1050px;
-        bottom: 1000px;
+    .orderInfo {
+        margin-top: 20px;
     }
-    .calculateTotal{
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding: 10px;
-        border-radius: 5px;
-        margin-right: 9.4px;
-        margin-top: 650px;
-        margin-bottom: 10px;
-        left: 1050px;
-        bottom: 1000px;
+
+    .calculateTotal {
+        margin-top: 20px;
     }
-    .bottomBttn{
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding: 10px;
-        border-radius: 5px;
-        margin-right: 9.4px;
-        margin-left: 260px;
-        margin-top: 665px;
-        margin-bottom: 10px;
-        left: 1050px;
-        bottom: 1000px;
+
+    .bottomBttn {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
     }
-    .clearCBttn{
+    .clearCBttn {
         margin-left: 10px;
     }
-    .pageBody{
-        margin-right: 450px;
-        border-radius: 10px;
+    .pageBody {
+        margin-right: 0px; /* Adjust margin-right for spacing */
+        margin-left: 0px; /* Add margin-left for spacing */
     }
+
     .overlay {
     position: fixed;
     top: 0;
@@ -437,8 +424,23 @@
         border-width: 2px;
         transition: background-color 0.3s ease;
     }
+    .doneOrderBttn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: white;
+        border-color: #EC92AE;
+        border-style: double;
+        border-radius: 50%;
+        border-style: solid;
+        color: #000000;
+        box-shadow: none;
+        width: 80px;
+        height: 80px;
+        transition: background-color 0.3s ease;
+    }
     .onlineBttn:hover{
-    background-color: #F7D3DE;
+        background-color: #F7D3DE;
     }
     .cashBttn{
         margin-right: 10px;
