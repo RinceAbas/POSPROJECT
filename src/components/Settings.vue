@@ -10,12 +10,12 @@
             </div>
         </div>
         <div class="settings">
-            <Button class ="buttons" label="Theme" severity="secondary" text/>  <br>
+            <Button class ="buttons" label="Users" severity="secondary" text/>  <br>
             <Button class ="buttons" label="Profile" severity="secondary" text/>  <br>
             <Button class ="buttons" label="Log Out" severity="secondary" text @click="logout"/> 
 
         </div>
-    </div>z
+    </div>
 </template>
 
 <script setup>

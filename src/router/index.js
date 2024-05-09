@@ -7,6 +7,7 @@ import Login from "../components/Login.vue";
 import Inventory from "../components/Inventory.vue";
 import Settings from "../components/Settings.vue";
 import Dashboard from "../components/Dashboard.vue";
+import SignUP from "../components/SignUP.vue";
 
 const routes = [
     {
@@ -43,6 +44,11 @@ const routes = [
       path: "/Settings",
       name: "Settings",
       component: Settings,
+    },
+    {
+      path: "/SignUP",
+      name: "SignUP",
+      component: SignUP,
     },
   ];
 

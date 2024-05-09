@@ -10,22 +10,22 @@
         </div>  
     </div>
     <div class="menuBody">
-    <div class="menu-container" v-for="(menuItems, i) in menuItems" :key="i">
-                <Panel :header="menuItems.category">
-                    <div class="menuItems">
-                        <div class="itemPic">
-                            <img :src="menuItems.samplepic" alt="Image" width="100" height="80" />
-                        </div>
-                        <div class="name">{{ menuItems.name }}</div>
-                        <div class="price">₱{{ menuItems.price }}</div>
-                        <div class="buttons">
-                            <Button label="Secondary" severity="secondary" raised class="editBttn" @click="editItem(i)">Edit</Button>
-                            <Button label="Danger" severity="danger" raised class="deleteBttn" @click="deleteItem(i)">Delete</Button>
-                        </div>
-                    </div>
-                </Panel>
+    <div class="menu-container" v-for="(menuItem, index) in menuItems" :key="menuItem.ItemID">
+        <Panel :header="menuItem.menuItemCategory">
+            <div class="menuItems">
+                <div class="itemPic">
+                    <img :src="menuItem.menuItemPic" alt="Image" width="100" height="80" />
                 </div>  
-        </div>
+                <div class="name">{{ menuItem.ItemID }}: {{ menuItem.menuItemName }}</div>
+                <div class="price">₱{{ menuItem.menuItemPrice }}</div>
+                <div class="buttons">
+                    <Button label="Secondary" severity="secondary" raised class="editBttn" @click="editItem(index)">Edit</Button>
+                    <Button label="Danger" severity="danger" raised class="deleteBttn" @click="deleteItem(menuItem)">Delete</Button>
+                </div>
+            </div>
+        </Panel>
+    </div>
+</div>
     </div>
 </div>
     <div v-if="showAddOverlay" class="overlay">
@@ -33,8 +33,17 @@
                 <h2>Add Item</h2>
                 <div class="overlay-content1">
                 <div class="form-group">
+                    <label for="category">Item ID:</label>
+                    <input type="text" id="itemID" v-model="addItem.itemID" />
+                </div>                    
+                <div class="form-group">
                     <label for="category">Category:</label>
-                    <input type="text" id="category" v-model="addItem.category" />
+                        <select id="category" v-model="addItem.category">
+                        <option value="Meals">Meals</option>
+                        <option value="Drinks">Drinks</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Desserts">Desserts</option>
+                        </select>
                 </div>
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -45,8 +54,8 @@
                     <input type="text" id="price" v-model="addItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="samplepic">Sample Picture:</label>
-                    <input type="file" id="samplepic" @change="handleFileUpload" />
+                    <label for="pic">Image Link:</label>
+                    <input type="text" id="price" v-model="addItem.pic" />
                 </div>
                 <div class="buttons">
                     <Button label="Save" class="saveBttn" @click="saveItem" />
@@ -62,7 +71,12 @@
                 <div class="overlay-content1">
                 <div class="form-group">
                     <label for="category">Category:</label>
-                    <input type="text" id="category" v-model="editedItem.category" />
+                        <select id="category" v-model="editedItem.category">
+                        <option value="Meals">Meals</option>
+                        <option value="Drinks">Drinks</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Desserts">Desserts</option>
+                        </select>
                 </div>
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -73,8 +87,8 @@
                     <input type="text" id="price" v-model="editedItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="samplepic">Sample Picture:</label>
-                    <input type="file" id="samplepic" @change="handleFileUpload" />
+                    <label for="samplepic">Image:</label>
+                    <input type="text" id="samplepic" v-model="editedItem.img" />
                 </div>
                 <div class="buttons">
                     <Button label="Save" class="saveBttn" @click="saveEditedItem" />
@@ -88,91 +102,52 @@
 
 <script setup>
 import Panel from "primevue/panel";
-import { ref, computed } from "vue";
+import { ref, onMounted } from "vue";
 import  Button  from "primevue/button";
 import Image  from "primevue/image";
 import Navbar from './Navbar.vue';
+import axios from 'axios';
 
-function deleteItem(index) {
-    menuItems.value.splice(index, 1);
+const menuItems = ref([]);
+
+async function fetchMenuItems() {
+    try {
+        const response = await axios.get('http://localhost:8000/api/menu/');
+        menuItems.value = response.data;
+    } catch (error) {
+        console.error('Error fetching menu items:', error);
+    }
 }
 
-const menuItems = ref([
-        {
-            category: "Meal",
-            name: "Adobo with Rice",
-            price: "60",
-            samplepic: "../src/assets/adobo.jpg",
-        },
-        {
-            category: "Meal",
-            name: "Afritada with Rice",
-            price: "60",
-            samplepic: "../src/assets/afritada.jpg",
-        },
-        {
-            category: "Meal",
-            name: "Mechado with Rice",
-            price: "60",
-            samplepic: "../src/assets/mechado.jpg",
-        },
-        {
-            category: "Drinks",
-            name: "Coke",
-            price: "25",
-            samplepic: "../src/assets/coke.jpg",
-        },
-        {
-            category: "Drinks",
-            name: "Minute-Maid",
-            price: "20",
-            samplepic: "../src/assets/minute-maid.jpg",
-        },
-        {
-            category: "Drinks",
-            name: "Mineral Water",
-            price: "20",
-            samplepic: "../src/assets/mineral-water.jpg",
-        },
-        {
-            category: "Snacks",
-            name: "Rebisco",
-            price: "8",
-            samplepic: "../src/assets/rebisco.jpg",
-        },
-        {
-            category: "Snacks",
-            name: "Maruya",
-            price: "10",
-            samplepic: "../src/assets/maruya.jpg",
-        },
-        {
-            category: "Snacks",
-            name: "Bread",
-            price: "10",
-            samplepic: "../src/assets/bread.jpg",
-        },
-        {
-            category: "Desserts",
-            name: "Spaghetti",
-            price: "30",
-            samplepic: "../src/assets/spaghetti.jpg",
-        },
-        {
-            category: "Desserts",
-            name: "Halo-Halo",
-            price: "30",
-            samplepic: "../src/assets/halo-halo.jpg",
-        },
-        {
-            category: "Desserts",
-            name: "Mais Con Yelo",
-            price: "30",
-            samplepic: "../src/assets/mais.jpg",
+onMounted(fetchMenuItems);
+
+
+async function deleteItem(menuItem) {
+    // Ask for confirmation before deleting the item
+    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+    if (!confirmDelete) {
+        return; // If user cancels, exit the function
+    }
+
+    try {
+        const response = await axios.delete(`http://localhost:8000/api/menu/${menuItem.ItemID}`);
+        if (response.status === 200) {
+            // If successful, remove the item from the menuItems array
+            const index = menuItems.value.findIndex(item => item.ItemID === menuItem.ItemID);
+            if (index !== -1) {
+                menuItems.value.splice(index, 1);
+            }
+            alert("Item deleted successfully");
         }
-    ]);
+    } catch (error) {
+        // Handle error response
+        console.error(error);
+        alert("Error deleting item");
+    }
+}
 
 const addItem = ref({
+    id: "",
     category: "",
     name: "",
     price: "",
@@ -180,6 +155,7 @@ const addItem = ref({
 });
 
 const editedItem = ref({
+    id: "",
     category: "",
     name: "",
     price: "",
@@ -190,28 +166,82 @@ const showEditOverlay = ref(false);
 const showAddOverlay = ref(false);
 
 function editItem(index) {
+    console.log("Editing item with ID:", menuItems.value[index].ItemID);
     editedItem.value = { ...menuItems.value[index] };
+    editedItem.value.id = menuItems.value[index].ItemID; // Ensure ItemID is correctly accessed
+    console.log("Edited item:", editedItem.value);
     showEditOverlay.value = true;
 }
 
-function saveEditedItem(index) {
-    menuItems.value.splice(index, 1, editedItem.value);
-    cancelItem();
+async function saveEditedItem() {
+  try {
+    if (editedItem.value.menuItemID) { 
+        const response = await axios.get(`http://localhost:8000/menu/${editedItem.value.ItemID}`);
+        const itemToUpdate = response.data;
+
+      const updatedItemIndex = menuItems.value.findIndex(item => item.ItemID === itemToUpdate.ItemID);
+
+      const updateResponse = await axios.put(`http://localhost:8000/menu/${itemToUpdate.ItemID}`, {
+        menuItemCategory: editedItem.value.category,
+        menuItemName: editedItem.value.name,
+        menuItemPrice: parseInt(editedItem.value.price),
+        menuItemPic: editedItem.value.pic
+      });
+
+      if (updateResponse.status === 200) {
+        // Update local state using the original index
+        if (updatedItemIndex !== -1) { // Ensure the item exists in the array
+          menuItems.value.splice(updatedItemIndex, 1, updateResponse.data);
+        }
+        alert("Item updated successfully");
+      } else {
+        console.error("Error updating item:", updateResponse.data);
+        alert("Error updating item. See console for details");
+      }
+    } else {
+      // Handle the case where ItemID is missing (e.g., display an error message)
+      console.error("Item ID missing for update");
+      alert("Cannot update item. Please select an item first.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Error updating item");
+  } finally {
+    showEditOverlay.value = false;
+  }
 }
 
 function saveItem() {
-    menuItems.value.push(addItem.value);
-    cancelItem();
+    axios.post('http://localhost:8000/api/menu/', {  // Ensure the trailing slash after 'menu'
+        menuItemID: addItem.value.itemID,
+        menuItemCategory: addItem.value.category,
+        menuItemName: addItem.value.name,
+        menuItemPrice: parseInt(addItem.value.price),
+        menuItemPic: addItem.value.pic
+    })
+    .then(response => {
+        alert("Item added successfully");
+        console.log(response.data);
+        menuItems.value.push(response.data);
+    })
+    .catch(error => {
+        // Handle error response
+        console.error(error);
+    });
+    showAddOverlay.value = false;
+    showEditOverlay.value = false;
 }
 
 function cancelItem() {
     addItem.value = {
+        id: "",
         category: "",
         name: "",
         price: "",
         samplepic: ""
     };
     editedItem.value = {
+        id: "",
         category: "",
         name: "",
         price: "",

@@ -187,8 +187,16 @@
     const orders = ref([]);
     
     function doneTransaction() {
-        showOverlay.value = false;
-        orders.value = [];
+        axios.post('/api/orders', { orders: orders.value })
+            .then(response => {
+                // Handle success
+                showOverlay.value = false;
+                orders.value = [];
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     function addToOrder(menuItem) {

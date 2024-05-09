@@ -5,16 +5,17 @@
         </div> 
         <div class="formContainer">
             <div class="inputContainer">
+            <input id="userID" type="text" v-model="cashierID" placeholder="Enter CashierID" />
             <input id="user" type="text" v-model="username" placeholder="Enter Username" />
             <input id="pass" type="password" v-model="password" placeholder="Enter Password" />
                 
             <div class="loginContainer">
-            <button type="submit"  class="button" @click="login">Login</button>
+            <button type="submit"  class="signUpbutton" @click="SignUP">Submit</button>
             </div>
-            <div class ="signUpContainer">
-            <button type="submit"  class="signUpbutton" @click="SignUP">Sign Up</button>
+            <div class="signUpContainer">
+            <button type="submit"  class="loginbutton" @click="login">Go Back</button>
             </div>
-            </div>
+        </div>
         </div>
     </div>
 </template>
@@ -24,37 +25,40 @@
 import axios from 'axios';
 
 export default {
-    name: 'Login',
+    name: 'SignUP',
     data() {
         return {
+            cashierID: '',
             username: '',
             password: '',
         };
     },
     methods: {
-        async login() {
+        async SignUP() {
     try {
-        const response = await axios.post('http://localhost:8000/api/login', {
-            username: this.username,
-            password: this.password,
+        const response = await axios.post('http://127.0.0.1:8000/api/cashier', {
+        cashierID: this.cashierID,
+        username: this.username,
+        password: this.password,
         });
 
-        if (response.data.message === "Login successful") {
+
+        // Check the status code of the response
+        if (response.status === 200) {
+            // Redirect to Home page if login is successful
             this.$router.push('/Home');
         } else {
+            // Show error message if login is unsuccessful
             alert('Login failed. Please check your credentials.');
         }
     } catch (error) {
+        // Handle any error that occurs during the request
         console.error(error);
-        if (error.response && error.response.status === 401) {
-            alert('Invalid username or password');
-        } else {
-            alert('An error occurred during login');
-        }
+        alert('An error occurred during login');
     }
 },
-        SignUP() {
-            this.$router.push('/SignUP');
+login() {
+            this.$router.push('/');
         },
     },
 };
@@ -111,18 +115,6 @@ export default {
     margin-left: 90px;
     border-radius: 30px;
 }
-
-.signUpbutton {
-  background-color: #EC92AE; /* Change the background color to blue */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 20px; /* Add border-radius to make the button round */
-}
 .signUpContainer{
     display: flex;
     justify-content: center; /* Add this line to center the content horizontally */
@@ -147,7 +139,7 @@ export default {
 .loginContainer input::placeholder{
     color: black;
 }
-.button {
+.signUpbutton {
   background-color: #EC92AE; /* Change the background color to blue */
   border: none;
   color: white;
@@ -158,4 +150,16 @@ export default {
   font-size: 16px;
   border-radius: 20px; /* Add border-radius to make the button round */
 }
+.loginbutton {
+  background-color: #EC92AE; /* Change the background color to blue */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  font-size: 16px;
+  border-radius: 20px; /* Add border-radius to make the button round */
+}
+
 </style>
