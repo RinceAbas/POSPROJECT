@@ -93,10 +93,11 @@
     import Button from 'primevue/button';
     import 'primeicons/primeicons.css'
     import Panel from 'primevue/panel'; 
+    import axios from 'axios';
 
 
 
-    import { ref, computed } from "vue";
+    import { ref, computed, onMounted } from "vue";
 
     const visible = ref(false);
     const showOverlay = ref(false);
@@ -104,82 +105,13 @@
     const handlePayment = (method) => {
         orders.value = [];
     };
+    
+    onMounted(() => {
+    // Call the showAll function when the component is mounted to display all items by default
+    showAll();
+    });
 
-
-    const menuItems = ref([
-        {
-            category: "Meal",
-            name: "Adobo with Rice",
-            price: "60",
-            samplepic: "../src/assets/adobo.jpg",
-        },
-        {
-            category: "Meal",
-            name: "Afritada with Rice",
-            price: "60",
-            samplepic: "../src/assets/afritada.jpg",
-        },
-        {
-            category: "Meal",
-            name: "Mechado with Rice",
-            price: "60",
-            samplepic: "../src/assets/mechado.jpg",
-        },
-        {
-            category: "Drinks",
-            name: "Coke",
-            price: "25",
-            samplepic: "../src/assets/coke.jpg",
-        },
-        {
-            category: "Drinks",
-            name: "Minute-Maid",
-            price: "20",
-            samplepic: "../src/assets/minute-maid.jpg",
-        },
-        {
-            category: "Drinks",
-            name: "Mineral Water",
-            price: "20",
-            samplepic: "../src/assets/mineral-water.jpg",
-        },
-        {
-            category: "Snacks",
-            name: "Rebisco",
-            price: "8",
-            samplepic: "../src/assets/rebisco.jpg",
-        },
-        {
-            category: "Snacks",
-            name: "Maruya",
-            price: "10",
-            samplepic: "../src/assets/maruya.jpg",
-        },
-        {
-            category: "Snacks",
-            name: "Bread",
-            price: "10",
-            samplepic: "../src/assets/bread.jpg",
-        },
-        {
-            category: "Desserts",
-            name: "Spaghetti",
-            price: "30",
-            samplepic: "../src/assets/spaghetti.jpg",
-        },
-        {
-            category: "Desserts",
-            name: "Halo-Halo",
-            price: "30",
-            samplepic: "../src/assets/halo-halo.jpg",
-        },
-        {
-            category: "Desserts",
-            name: "Mais Con Yelo",
-            price: "30",
-            samplepic: "../src/assets/mais.jpg",
-        }
-    ]);
+    const menuItems = ref([]);
     const sortedMenuItems = computed(() => {
             return menuItems.value.sort((a, b) => a.category.localeCompare(b.category));
             });
@@ -228,20 +160,50 @@
     function clearOrders() {
         orders.value = [];
     }
-    function showAll() {
-        menuItems.value = sortedMenuItems.value;
+    async function showAll() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/menu/');
+            menuItems.value = response.data.map(item => ({
+            category: item.menuItemCategory,
+            name: item.menuItemName,
+            price: item.menuItemPrice,
+            samplepic: item.menuItemPic // Assuming 'samplepic' is the property name for the picture
+        }));
+            } catch (error) {
+            console.error('Error fetching menu items:', error);
+            }
     }
-    function showMeals() {
-        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Meal");
+    async function showMeals() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/menu/showmeals');
+            menuItems.value = response.data;
+            } catch (error) {
+            console.error('Error fetching menu items:', error);
+            }
     }
-    function showDrinks() {
-        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Drinks");
+    async function showDrinks() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/menu/showdrinks');
+            menuItems.value = response.data;
+            } catch (error) {
+            console.error('Error fetching menu items:', error);
+            }
     }
-    function showSnacks() {
-        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Snacks");
+    async function showSnacks() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/menu/showsnacks');
+            menuItems.value = response.data;
+            } catch (error) {
+            console.error('Error fetching menu items:', error);
+            }
     }
-    function showDeserts() {
-        menuItems.value = sortedMenuItems.value.filter(menuItem => menuItem.category === "Desserts");
+    async function showDeserts() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/menu/showdesserts');
+            menuItems.value = response.data
+            } catch (error) {
+            console.error('Error fetching menu items:', error);
+            }
     }
     </script>
 

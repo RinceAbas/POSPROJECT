@@ -10,21 +10,21 @@
         </div>  
     </div>
     <div class="menuBody">
-    <div class="menu-container" v-for="(menuItem, index) in menuItems" :key="menuItem.ItemID">
-        <Panel :header="menuItem.menuItemCategory">
-            <div class="menuItems">
-                <div class="itemPic">
-                    <img :src="menuItem.menuItemPic" alt="Image" width="100" height="80" />
-                </div>  
-                <div class="name">{{ menuItem.ItemID }}: {{ menuItem.menuItemName }}</div>
-                <div class="price">₱{{ menuItem.menuItemPrice }}</div>
-                <div class="buttons">
-                    <Button label="Secondary" severity="secondary" raised class="editBttn" @click="editItem(index)">Edit</Button>
-                    <Button label="Danger" severity="danger" raised class="deleteBttn" @click="deleteItem(menuItem)">Delete</Button>
-                </div>
+        <div class="menu-container" v-for="(menuItem, index) in menuItems" :key="menuItem.ItemID">
+    <Panel :header="menuItem.menuItemCategory">
+        <div class="menuItems">
+            <div class="itemPic">
+                <img :src="getImgSrc(menuItem.menuItemPic)" alt="Image" width="100" height="80" />
+            </div>  
+            <div class="name">{{ menuItem.ItemID }}: {{ menuItem.menuItemName }}</div>
+            <div class="price">₱{{ menuItem.menuItemPrice }}</div>
+            <div class="buttons">
+                <Button label="Secondary" severity="secondary" raised class="editBttn" @click="editItem(index)">Edit</Button>
+                <Button label="Danger" severity="danger" raised class="deleteBttn" @click="deleteItem(menuItem)">Delete</Button>
             </div>
-        </Panel>
-    </div>
+        </div>
+    </Panel>
+</div>
 </div>
     </div>
 </div>
@@ -54,8 +54,8 @@
                     <input type="text" id="price" v-model="addItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="pic">Image Link:</label>
-                    <input type="text" id="price" v-model="addItem.pic" />
+                    <label for="pic">Image Upload:</label>
+                    <input type="file" id="pic" @change="handleFileUpload" accept="image/*"/>
                 </div>
                 <div class="buttons">
                     <Button label="Save" class="saveBttn" @click="saveItem" />
@@ -87,8 +87,8 @@
                     <input type="text" id="price" v-model="editedItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="samplepic">Image:</label>
-                    <input type="text" id="samplepic" v-model="editedItem.img" />
+                    <label for="pic">Image:</label>
+                    <input type="text" id="pic" v-model="editedItem.img" />
                 </div>
                 <div class="buttons">
                     <Button label="Save" class="saveBttn" @click="saveEditedItem" />
@@ -103,24 +103,44 @@
 <script setup>
 import Panel from "primevue/panel";
 import { ref, onMounted } from "vue";
-import  Button  from "primevue/button";
-import Image  from "primevue/image";
+import Button from "primevue/button";
 import Navbar from './Navbar.vue';
 import axios from 'axios';
 
 const menuItems = ref([]);
+const imagePreview = ref();
 
 async function fetchMenuItems() {
-    try {
-        const response = await axios.get('http://localhost:8000/api/menu/');
-        menuItems.value = response.data;
-    } catch (error) {
-        console.error('Error fetching menu items:', error);
-    }
+  try {
+    const response = await axios.get('http://localhost:8000/api/menu/');
+    menuItems.value = response.data;
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+  }
 }
+
 
 onMounted(fetchMenuItems);
 
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      imagePreview.value = reader.result;
+      addItem.value.pic = file;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function getImgSrc(imageBlob) {
+  if (imageBlob instanceof Blob) {
+    return URL.createObjectURL(imageBlob);
+  } else {
+    return ''; // Return an empty string or placeholder image URL if imageBlob is not a Blob
+  }
+}
 
 async function deleteItem(menuItem) {
     // Ask for confirmation before deleting the item
@@ -147,11 +167,11 @@ async function deleteItem(menuItem) {
 }
 
 const addItem = ref({
-    id: "",
+    itemID: "", // Change this to "itemID" to match the backend model
     category: "",
     name: "",
     price: "",
-    samplepic: ""
+    pic: "" // Change this to "pic" to match the backend model
 });
 
 const editedItem = ref({
@@ -211,35 +231,38 @@ async function saveEditedItem() {
   }
 }
 
-function saveItem() {
-    axios.post('http://localhost:8000/api/menu/', {  // Ensure the trailing slash after 'menu'
-        menuItemID: addItem.value.itemID,
-        menuItemCategory: addItem.value.category,
-        menuItemName: addItem.value.name,
-        menuItemPrice: parseInt(addItem.value.price),
-        menuItemPic: addItem.value.pic
-    })
-    .then(response => {
-        alert("Item added successfully");
-        console.log(response.data);
-        menuItems.value.push(response.data);
-    })
-    .catch(error => {
-        // Handle error response
-        console.error(error);
+async function saveItem() {
+  try {
+    const formData = new FormData();
+    formData.append('menuItemID', addItem.value.itemID);
+    formData.append('menuItemCategory', addItem.value.category);
+    formData.append('menuItemName', addItem.value.name);
+    formData.append('menuItemPrice', addItem.value.price);
+    formData.append('menuItemPic', addItem.value.pic);
+
+    const response = await axios.post('http://localhost:8000/api/menu/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     });
-    showAddOverlay.value = false;
-    showEditOverlay.value = false;
+
+    // Add the newly created item to the local menuItems list
+    menuItems.value.push(response.data);
+    alert("Item added successfully");
+  } catch (error) {
+    console.error('Error adding item:', error);
+    alert("Failed to add item. See console for details.");
+  }
 }
 
 function cancelItem() {
     addItem.value = {
-        id: "",
-        category: "",
-        name: "",
-        price: "",
-        samplepic: ""
-    };
+    itemID: "",
+    category: "",
+    name: "",
+    price: "",
+    pic: ""
+  };
     editedItem.value = {
         id: "",
         category: "",
@@ -250,11 +273,6 @@ function cancelItem() {
     showAddOverlay.value = false;
     showEditOverlay.value = false;
 }
-
-function handleFileUpload(event) {
-    const file = event.target.files[0];
-}
-
 </script>
 
 <style scoped>
@@ -345,7 +363,7 @@ h3 {
 
 .overlay-content {
     width: 450px;
-    height: 370px;
+    height: 390px;
     background-color: #EC92AE;
     padding: 20px;
     border-radius: 5px;

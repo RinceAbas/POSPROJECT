@@ -50,17 +50,13 @@ const deleteOrder = (index) => {
     <div class="pageBody">
     <div class="rectangles">
         <div class="totalSales">
-            <h3>Total Sales:</h3>
-            <div class="totalSalesAmount"><h3>₱{{ calculateTotal }}</h3></div>
+            <div class="totalSalesAmount"><h3>Total Sales: ₱{{ calculateTotal }}</h3></div>
+        </div>
+        <div>
         </div>
         <div class="totalOrders">
-            <h3>Total Orders</h3>
-            <div class="totalOrdersAmount"><h3>{{ orders.length }}</h3></div>
-        </div>
-        <div class="newOrders">
-            <h3>New Orders</h3> 
-            <div class="newOrdersAmount"><h3>{{ newOrdersCount }}</h3></div>
-        </div>        
+            <div class="totalOrdersAmount"><h3>Total Orders: {{ orders.length }}</h3></div>
+        </div>      
     </div>
     <div class="tableContainer">
         <h3 class="orderList">
@@ -74,11 +70,9 @@ const deleteOrder = (index) => {
             <Column field="date" header="Date"></Column>
             <Column field="time" header="Time"></Column>
             <Column field="total" header="Total"></Column>
-            <Column field="status" header="Status"></Column>
             <Column header="Actions">
                 <template #body="rowData">
                     <Button icon="pi pi-info-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="showOverlay=true; orderIndex=rowData.index"></Button>
-                    <Button icon="pi pi-check-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="doneOrder(rowData.index)"></Button>
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger action-button" @click="deleteOrder(rowData.index)"></Button>
                 </template>
             </Column>
@@ -125,7 +119,7 @@ const deleteOrder = (index) => {
 }
 .rectangles {
     display: flex;
-    margin-left: 30px;
+    margin-left: 300px;
     margin-right: 30px;
     margin-top: 10px;
 }
@@ -141,10 +135,9 @@ const deleteOrder = (index) => {
     margin-left: 30px;
     margin-right: 60px;
 }
-.totalOrders {
+.blank {
     width: 30%;
     height: 100px;
-    background-color: #b8b8b8;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -153,7 +146,7 @@ const deleteOrder = (index) => {
     margin-left: 30px;
     margin-right: 60px;
 }
-.newOrders {
+.totalOrders {
     width: 30%;
     height: 100px;
     background-color: #b8b8b8;
