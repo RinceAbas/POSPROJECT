@@ -13,10 +13,10 @@
         <div class="menu-container" v-for="(menuItem, index) in menuItems" :key="menuItem.ItemID">
     <Panel :header="menuItem.menuItemCategory">
         <div class="menuItems">
-            <div class="itemPic">
-                <img :src="getImgSrc(menuItem.menuItemPic)" alt="Image" width="100" height="80" />
-            </div>  
-            <div class="name">{{ menuItem.ItemID }}: {{ menuItem.menuItemName }}</div>
+            <div class="itemPic">   
+                <img :src="menuItem.menuItemPic" alt="Image" width="100" height="80" />
+            </div>
+            <div class="name">{{ menuItem.menuItemName }}</div>
             <div class="price">₱{{ menuItem.menuItemPrice }}</div>
             <div class="buttons">
                 <Button label="Secondary" severity="secondary" raised class="editBttn" @click="editItem(index)">Edit</Button>
@@ -32,10 +32,6 @@
             <div class="overlay-content">
                 <h2>Add Item</h2>
                 <div class="overlay-content1">
-                <div class="form-group">
-                    <label for="category">Item ID:</label>
-                    <input type="text" id="itemID" v-model="addItem.itemID" />
-                </div>                    
                 <div class="form-group">
                     <label for="category">Category:</label>
                         <select id="category" v-model="addItem.category">
@@ -54,8 +50,8 @@
                     <input type="text" id="price" v-model="addItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="pic">Image Upload:</label>
-                    <input type="file" id="pic" @change="handleFileUpload" accept="image/*"/>
+                    <label for="pic">Image Link:</label>
+                    <input type="text" id="pic" v-model="addItem.pic" />
                 </div>
                 <div class="buttons">
                     <Button label="Save" class="saveBttn" @click="saveItem" />
@@ -87,8 +83,8 @@
                     <input type="text" id="price" v-model="editedItem.price" />
                 </div>
                 <div class="form-group">
-                    <label for="pic">Image:</label>
-                    <input type="text" id="pic" v-model="editedItem.img" />
+                    <label for="pic">Image Link:</label>
+                    <input type="text" id="pic" v-model="editedItem.pic" />
                 </div>
                 <div class="buttons">
                     <Button label="Save" class="saveBttn" @click="saveEditedItem" />
@@ -109,6 +105,7 @@ import axios from 'axios';
 
 const menuItems = ref([]);
 const imagePreview = ref();
+const uploadedFile = ref(null);
 
 async function fetchMenuItems() {
   try {
@@ -119,31 +116,10 @@ async function fetchMenuItems() {
   }
 }
 
-
 onMounted(fetchMenuItems);
 
-function handleFileUpload(event) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      imagePreview.value = reader.result;
-      addItem.value.pic = file;
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-function getImgSrc(imageBlob) {
-  if (imageBlob instanceof Blob) {
-    return URL.createObjectURL(imageBlob);
-  } else {
-    return ''; // Return an empty string or placeholder image URL if imageBlob is not a Blob
-  }
-}
 
 async function deleteItem(menuItem) {
-    // Ask for confirmation before deleting the item
     const confirmDelete = window.confirm("Are you sure you want to delete this item?");
     if (!confirmDelete) {
         return; // If user cancels, exit the function
@@ -167,11 +143,10 @@ async function deleteItem(menuItem) {
 }
 
 const addItem = ref({
-    itemID: "", // Change this to "itemID" to match the backend model
     category: "",
     name: "",
     price: "",
-    pic: "" // Change this to "pic" to match the backend model
+    pic: ""
 });
 
 const editedItem = ref({
@@ -179,7 +154,7 @@ const editedItem = ref({
     category: "",
     name: "",
     price: "",
-    samplepic: ""
+    pic: ""
 });
 
 const showEditOverlay = ref(false);
@@ -188,53 +163,44 @@ const showAddOverlay = ref(false);
 function editItem(index) {
     console.log("Editing item with ID:", menuItems.value[index].ItemID);
     editedItem.value = { ...menuItems.value[index] };
-    editedItem.value.id = menuItems.value[index].ItemID; // Ensure ItemID is correctly accessed
+    editedItem.value.ItemID = menuItems.value[index].ItemID; // Ensure ItemID is correctly accessed
     console.log("Edited item:", editedItem.value);
     showEditOverlay.value = true;
 }
 
-async function saveEditedItem() {
+async function saveEditedItem() { 
   try {
-    if (editedItem.value.menuItemID) { 
-        const response = await axios.get(`http://localhost:8000/menu/${editedItem.value.ItemID}`);
-        const itemToUpdate = response.data;
 
-      const updatedItemIndex = menuItems.value.findIndex(item => item.ItemID === itemToUpdate.ItemID);
+    const formData = new FormData();
+    formData.append('menuItemCategory', editedItem.value.category);
+    formData.append('menuItemName', editedItem.value.name);
+    formData.append('menuItemPrice', editedItem.value.price);
+    formData.append('menuItemPic', editedItem.value.pic);
 
-      const updateResponse = await axios.put(`http://localhost:8000/menu/${itemToUpdate.ItemID}`, {
-        menuItemCategory: editedItem.value.category,
-        menuItemName: editedItem.value.name,
-        menuItemPrice: parseInt(editedItem.value.price),
-        menuItemPic: editedItem.value.pic
-      });
-
-      if (updateResponse.status === 200) {
-        // Update local state using the original index
-        if (updatedItemIndex !== -1) { // Ensure the item exists in the array
-          menuItems.value.splice(updatedItemIndex, 1, updateResponse.data);
-        }
-        alert("Item updated successfully");
-      } else {
-        console.error("Error updating item:", updateResponse.data);
-        alert("Error updating item. See console for details");
+    const response = await axios.put(`http://localhost:8000/api/menu/${editedItem.value.ItemID}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data' // This might still be necessary depending on the backend implementation
       }
-    } else {
-      // Handle the case where ItemID is missing (e.g., display an error message)
-      console.error("Item ID missing for update");
-      alert("Cannot update item. Please select an item first.");
+    });
+
+    // Update the menuItems array with the edited item data
+    const editedItemIndex = menuItems.value.findIndex(item => item.ItemID === editedItem.value.ItemID);
+    if (editedItemIndex !== -1) {
+      menuItems.value.splice(editedItemIndex, 1, response.data);
     }
-  } catch (error) {
-    console.error(error);
-    alert("Error updating item");
-  } finally {
+
     showEditOverlay.value = false;
+    alert("Item updated successfully");
+  } catch (error) {
+    console.error('Error updating item:', error);
+    alert("Error updating item. See console for details.");
   }
 }
 
-async function saveItem() {
+async function saveItem() { 
+
   try {
     const formData = new FormData();
-    formData.append('menuItemID', addItem.value.itemID);
     formData.append('menuItemCategory', addItem.value.category);
     formData.append('menuItemName', addItem.value.name);
     formData.append('menuItemPrice', addItem.value.price);
@@ -246,8 +212,9 @@ async function saveItem() {
       }
     });
 
-    // Add the newly created item to the local menuItems list
     menuItems.value.push(response.data);
+    showAddOverlay.value = false;
+    
     alert("Item added successfully");
   } catch (error) {
     console.error('Error adding item:', error);
@@ -255,16 +222,15 @@ async function saveItem() {
   }
 }
 
+
 function cancelItem() {
     addItem.value = {
-    itemID: "",
     category: "",
     name: "",
     price: "",
     pic: ""
   };
     editedItem.value = {
-        id: "",
         category: "",
         name: "",
         price: "",

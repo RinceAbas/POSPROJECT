@@ -78,8 +78,9 @@
         <div v-if="showOverlay" class="overlay">
             <div class="overlay-content">
                 <h3>Payment Method</h3>
-                <Button label="Cash" class="cashBttn" @click="doneTransaction" />
-                <Button label="Gcash" class="onlineBttn" @click="doneTransaction" />
+                <Button label="Cash" class="cashBttn" @click="doneTransaction('Cash')" />
+                <Button label="Gcash" class="onlineBttn" @click="doneTransaction('Gcash')" />
+                <Button label="Tally" class="onlineBttn" @click="doneTransaction('Tally')" />
                 <Button label="Cancel" severity="danger" class="cancelCBttn" @click="showOverlay = false"></Button> 
             </div>
         </div>
@@ -89,7 +90,6 @@
 
     <script setup>
     import Navbar from './Navbar.vue';
-    import Image from 'primevue/image';
     import Button from 'primevue/button';
     import 'primeicons/primeicons.css'
     import Panel from 'primevue/panel'; 
@@ -104,32 +104,50 @@
     const showOrderBox = ref(false);
     const handlePayment = (method) => {
         orders.value = [];
-    };
+    };988
     
-    onMounted(() => {
-    // Call the showAll function when the component is mounted to display all items by default
-    showAll();
-    });
-
     const menuItems = ref([]);
-    const sortedMenuItems = computed(() => {
-            return menuItems.value.sort((a, b) => a.category.localeCompare(b.category));
-            });
-
     const orders = ref([]);
     
-    function doneTransaction() {
-        axios.post('/api/orders', { orders: orders.value })
-            .then(response => {
-                // Handle success
-                showOverlay.value = false;
-                orders.value = [];
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+
+    onMounted(() => {
+    menuItems.value = fetchMenuItems();
+    });
+
+    async function fetchMenuItems() {
+        try {   
+            const response = await axios.get('http://localhost:8000/api/menu/');
+            menuItems.value = response.data.map(item => ({
+            category: item.menuItemCategory,
+            name: item.menuItemName,
+            price: item.menuItemPrice,
+            samplepic: item.menuItemPic // Assuming 'samplepic' is the property name for the picture
+        }));
+            } catch (error) {
+            console.error('Error fetching menu items:', error);
+            }
+
     }
+    
+    function doneTransaction(orderType) {
+    const formData = new FormData();
+    formData.append('order_items', JSON.stringify(orders.value));
+    formData.append('order_type', orderType);
+    formData.append('order_total', calculateTotal());
+
+    axios.post('http://localhost:8000/api/orders/', formData)
+        .then(response => {
+            // Handle success
+            showOverlay.value = false;
+            orders.value = [];
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    showOrderBox.value = false;
+    showOverlay.value = false;
+}
 
     function addToOrder(menuItem) {
         const existingOrder = orders.value.find(order => order.name === menuItem.name);
@@ -138,6 +156,7 @@
         } else {
             orders.value.push({ ...menuItem, quantity: 1 });
         }
+        console.log(orders.value)
     }
 
     function removeFromOrder(menuItem) {
@@ -159,6 +178,8 @@
     }
     function clearOrders() {
         orders.value = [];
+        showOrderBox.value = false;
+        showOverlay.value = false;
     }
     async function showAll() {
         try {
@@ -167,7 +188,7 @@
             category: item.menuItemCategory,
             name: item.menuItemName,
             price: item.menuItemPrice,
-            samplepic: item.menuItemPic // Assuming 'samplepic' is the property name for the picture
+            samplepic: item.menuItemPic
         }));
             } catch (error) {
             console.error('Error fetching menu items:', error);
@@ -176,7 +197,12 @@
     async function showMeals() {
         try {
             const response = await axios.get('http://localhost:8000/api/menu/showmeals');
-            menuItems.value = response.data;
+            menuItems.value = response.data.map(item => ({
+            category: item.menuItemCategory,
+            name: item.menuItemName,
+            price: item.menuItemPrice,
+            samplepic: item.menuItemPic
+        }));  
             } catch (error) {
             console.error('Error fetching menu items:', error);
             }
@@ -184,7 +210,12 @@
     async function showDrinks() {
         try {
             const response = await axios.get('http://localhost:8000/api/menu/showdrinks');
-            menuItems.value = response.data;
+            menuItems.value = response.data.map(item => ({
+            category: item.menuItemCategory,
+            name: item.menuItemName,
+            price: item.menuItemPrice,
+            samplepic: item.menuItemPic
+        }));  
             } catch (error) {
             console.error('Error fetching menu items:', error);
             }
@@ -192,7 +223,12 @@
     async function showSnacks() {
         try {
             const response = await axios.get('http://localhost:8000/api/menu/showsnacks');
-            menuItems.value = response.data;
+            menuItems.value = response.data.map(item => ({
+            category: item.menuItemCategory,
+            name: item.menuItemName,
+            price: item.menuItemPrice,
+            samplepic: item.menuItemPic
+        }));  
             } catch (error) {
             console.error('Error fetching menu items:', error);
             }
@@ -200,7 +236,12 @@
     async function showDeserts() {
         try {
             const response = await axios.get('http://localhost:8000/api/menu/showdesserts');
-            menuItems.value = response.data
+            menuItems.value = response.data.map(item => ({
+            category: item.menuItemCategory,
+            name: item.menuItemName,
+            price: item.menuItemPrice,
+            samplepic: item.menuItemPic
+        }));  
             } catch (error) {
             console.error('Error fetching menu items:', error);
             }
@@ -343,6 +384,7 @@
         padding: 20px;
         border-radius: 5px;
         text-align: center;
+        margin-left: 35px;
     }
     .doneCBttn{
         background-color: white;

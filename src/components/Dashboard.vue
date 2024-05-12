@@ -66,7 +66,7 @@ const deleteOrder = (index) => {
         
         <DataTable :value="orders">
             <Column field="orderNum" header="Order Number"></Column>
-            <Column field="transactionID" header="Transaction ID"></Column>
+            <Column field="orderType" header="OrderType"></Column>
             <Column field="date" header="Date"></Column>
             <Column field="time" header="Time"></Column>
             <Column field="total" header="Total"></Column>
