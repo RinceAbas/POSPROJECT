@@ -2,13 +2,13 @@
     <Navbar/>
     <div class="line"> </div>
     <div class="pageBody">
-    <div class="pageBody1">
-    <h3 class="inventoryContainer">Inventory</h3>
-    <div class="addItemBttn">
-        <div class="SortBy">
+        <div class="pageBody1">
+            <h3 class="inventoryContainer">Inventory</h3>
+            <div class="addItemBttn">
+            <div class="SortBy">    
             <button class="add-review-btn" @click="showAddOverlay = true">Add Item</button>
-        </div>  
-    </div>
+            </div>  
+        </div>
     <div class="menuBody">
         <div class="menu-container" v-for="(menuItem, index) in menuItems" :key="menuItem.ItemID">
     <Panel :header="menuItem.menuItemCategory">
@@ -279,6 +279,8 @@ h3 {
         flex-direction:row;
         flex-wrap: wrap;
         justify-content: center;
+        height: 100%;
+        width: 100%;
 }
 
 .menu-container{
@@ -346,6 +348,7 @@ h3 {
 .form-group{
     margin-top: 20px;
 }
+
 .pageBody{
     background-color: rgba(236, 146, 174, 0.5);
     width: 100%;
@@ -359,7 +362,7 @@ h3 {
     background-color: #F7D3DE;
     border-radius: 30px;
     margin-left: 50px;
-}
+}   
 .inventoryContainer{
     position: absolute;
     margin-left: 20px;

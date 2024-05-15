@@ -4,7 +4,7 @@
     <div class="pageBody">
 
         <div class="userBox">
-            <h2 class="adminTxt">Admin</h2>
+            <h2 class="adminTxt">MAIN CAMPUS</h2>
             <div class="logo">
             <img src="../assets/POSLOGO.png" alt="Image" width="100" height="80"/>
             </div>
@@ -49,7 +49,7 @@ h1{
 }
 .adminTxt{
     position: absolute;
-    margin-right: 250px;
+    margin-right: 200px;    
 }
 .userBox{
     background-color: #F7D3DE;

@@ -5,13 +5,12 @@
     <div class="pageBody">
     <h1>Debt</h1>
     <div class="rounded-table">
-        <DataTable :value="orders" >
-            <Column field="orderNum" header="Order Number"></Column>
-            <Column field="referenceNum" header="Reference Number"></Column>
-            <Column field="date" header="Date"></Column>
-            <Column field="time" header="Time"></Column>
-            <Column field="total" header="Total"></Column>
-            <Column field="status" header="Status"></Column>
+        <DataTable :value="orders" scrollable scrollHeight="400px" >
+            <Column field="OrderID" header="Order Number"></Column>
+            <Column field="orderType" header="Order Type"></Column>
+            <Column field="orderDate" header="Date"></Column>
+            <Column field="orderTime" header="Time"></Column>
+            <Column field="orderTotal" header="Total"></Column>
             <Column header="Actions">
                 <template #body="rowData">
                     <Button
@@ -19,7 +18,6 @@
                     class="p-button-rounded p-button-success p-mr-2 action-button"
                     @click="showOverlay=true; orderIndex=rowData.index"
                     ></Button>
-                    <Button icon="pi pi-check-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="doneOrder(rowData.index)"></Button>
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger action-button" @click="deleteOrder(rowData.index)"></Button>
                 </template>
             </Column>
@@ -32,8 +30,8 @@
                 <div class="form-group">
                     <label for="item">Items:</label>
                     <ul>
-                        <li v-for="item in orders[orderIndex].items" :key="item.name">
-                            {{ item.name }} - {{ item.quantity }} - {{ item.price }}
+                        <li v-for="item in parsedOrderItems" :key="item.name">
+                            {{ item.name }} - ₱{{ item.price }} x {{ item.quantity }} = ₱{{ item.price * item.quantity }}
                         </li>
                     </ul>
                 </div>
@@ -49,39 +47,49 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Navbar from './Navbar.vue';
-import { ref } from 'vue';
+import axios from 'axios';
+import { ref, onMounted, computed } from 'vue';
 
 const showOverlay = ref(false);
 const orderIndex = ref(0);
 
-const orders = ref([
-    { orderNum: '1', referenceNum: '0001', date: '10/25/23', time: '12:00nn', total: '₱60', status: 'Pending',items: [
-        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
-    ]},
-    { orderNum: '2', referenceNum: '0002', date: '10/25/23', time: '1:00pm', total: '₱120', status: 'Pending ', items: [
-        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
-        {name: 'Afritada with Rice', quantity: '1', price: '₱60'},
-    ]},
-    { orderNum: '3', referenceNum: '0003', date: '10/26/23', time: '10:00am', total: '₱180', status: 'Pending', items: [
-        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
-        {name: 'Afritada with Rice', quantity: '1', price: '₱60'},
-        {name: 'Mechado with Rice', quantity: '1', price: '₱60'},
-    ] },
-    { orderNum: '4', referenceNum: '0004', date: '10/27/23', time: '11:00am', total: '₱60', status: 'Done' , items: [
-        {name: 'Mechado with Rice', quantity: '1', price: '₱60'},
-    ]},
-]);
-const doneOrder = (index) => {
-    if (confirm("Are you sure you want to confirm this order?")) {
-    orders.value[index].status = 'Done';
+const orders = ref([]);
+
+
+
+const parsedOrderItems = computed(() => {
+  if (orderIndex.value !== null && orders.value[orderIndex.value]) {
+    return JSON.parse(orders.value[orderIndex.value].orderItem);
+  }
+  return [];
+});
+
+const deleteOrder = async (index) => {
+    if (confirm("Are you sure you want to cancel this order?")) {
+        try {
+            const orderId = orders.value[index].OrderID;
+            await axios.delete(`http://localhost:8000/api/orders/${orderId}`);
+            orders.value.splice(index, 1); // Remove the deleted order from the frontend list
+        } catch (error) {
+            console.error('Error deleting order:', error);
+        }
     }
 };
 
-const deleteOrder = (index) => {
-    if (confirm("Are you sure you want to cancel this order?")) {
-        orders.value[index].status = 'Cancelled';
-    }
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/orders/showDebt');
+    orders.value = response.data;
+    console.log('Orders fetched:', orders.value); // Debugging: log fetched orders
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  }
 };
+
+onMounted(() => {
+  fetchData();
+}); 
+
 </script>
 
 <style scoped>

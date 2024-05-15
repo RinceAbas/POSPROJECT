@@ -108,12 +108,12 @@
     
     const menuItems = ref([]);
     const orders = ref([]);
-    
+
 
     onMounted(() => {
     menuItems.value = fetchMenuItems();
     });
-
+            
     async function fetchMenuItems() {
         try {   
             const response = await axios.get('http://localhost:8000/api/menu/');
@@ -126,7 +126,6 @@
             } catch (error) {
             console.error('Error fetching menu items:', error);
             }
-
     }
     
     function doneTransaction(orderType) {

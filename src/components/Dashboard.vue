@@ -1,45 +1,54 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted} from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Navbar from './Navbar.vue';
+import axios from 'axios';
 
-const showOverlay = ref(false);
+const showOverlay = ref(false); 
+const orders = ref([]);
+const orderIndex = ref(null);
 
-const orders = ref([
-    { orderNum: '1', transactionID: '0001', date: '10/25/23', time: '12:00nn', total: '₱60', status: 'Pending', items: [
-        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
-    ] },
-    { orderNum: '2', transactionID: '0002', date: '10/25/23', time: '1:00pm', total: '₱120', status: 'Pending', items: [
-        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
-        {name: 'Afritada with Rice', quantity: '1', price: '₱60'},
-    ]},
-    { orderNum: '3', transactionID: '0003', date: '10/26/23', time: '10:00am', total: '₱180', status: 'Pending', items: [
-        {name: 'Adobo with Rice', quantity: '1', price: '₱60'},
-        {name: 'Afritada with Rice', quantity: '1', price: '₱60'},
-        {name: 'Mechado with Rice', quantity: '1', price: '₱60'},
-    ]},
-    { orderNum: '4', transactionID: '0004', date: '10/27/23', time: '11:00am', total: '₱60', status: 'Done', items: [
-        {name: 'Mechado with Rice', quantity: '1', price: '₱60'},
-    ] },
-]);
-const calculateTotal = computed(() => {
-    return orders.value.reduce((acc, order) => acc + parseFloat(order.total.replace('₱', '')), 0);
+const parsedOrderItems = computed(() => {
+  if (orderIndex.value !== null && orders.value[orderIndex.value]) {
+    return JSON.parse(orders.value[orderIndex.value].orderItem);
+  }
+  return [];
 });
 
-const newOrdersCount = computed(() => {
-    return orders.value.filter(order => order.status === 'Pending').length;
-});
-
-const doneOrder = (index) => {
-    if (confirm("Are you sure you want to complete this order?")) {
-    orders.value[index].status = 'Done';
-    }
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/orders/showOrders');
+    orders.value = response.data;
+    console.log('Orders fetched:', orders.value); // Debugging: log fetched orders
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  }
 };
-const deleteOrder = (index) => {
+
+onMounted(() => {
+  fetchData();
+}); 
+
+const calculateTotal = computed(() => {
+    return orders.value.reduce((acc, order) => {
+        if (typeof order.orderTotal === 'number') {
+            acc += order.orderTotal;
+        }
+        return acc;
+    }, 0);
+});
+
+const deleteOrder = async (index) => {
     if (confirm("Are you sure you want to cancel this order?")) {
-        orders.value[index].status = 'Cancelled';
+        try {
+            const orderId = orders.value[index].OrderID;
+            await axios.delete(`http://localhost:8000/api/orders/${orderId}`);
+            orders.value.splice(index, 1); // Remove the deleted order from the frontend list
+        } catch (error) {
+            console.error('Error deleting order:', error);
+        }
     }
 };
 </script>
@@ -61,15 +70,14 @@ const deleteOrder = (index) => {
     <div class="tableContainer">
         <h3 class="orderList">
             Order List
-        </h3>
+        </h3>   
     <div class="pageBody1">
-        
-        <DataTable :value="orders">
-            <Column field="orderNum" header="Order Number"></Column>
+        <DataTable :value="orders" scrollable scrollHeight="400px">
+            <Column field="OrderID" header="Order Number"></Column>
             <Column field="orderType" header="OrderType"></Column>
-            <Column field="date" header="Date"></Column>
-            <Column field="time" header="Time"></Column>
-            <Column field="total" header="Total"></Column>
+            <Column field="orderDate" header="Date"></Column>
+            <Column field="orderTime" header="Time"></Column>
+            <Column field="orderTotal" header="Total"></Column>
             <Column header="Actions">
                 <template #body="rowData">
                     <Button icon="pi pi-info-circle" class="p-button-rounded p-button-success p-mr-2 action-button" @click="showOverlay=true; orderIndex=rowData.index"></Button>
@@ -77,25 +85,25 @@ const deleteOrder = (index) => {
                 </template>
             </Column>
         </DataTable>
-    </div>
+    </div>      
 </div>
 </div>
 <div v-if="showOverlay" class="overlay">
-            <div class="overlay-content">
-                <h3>Order Info</h3>
-                <div class="form-group">
-                    <label for="item">Items:</label>
-                    <ul>
-                        <li v-for="item in orders[orderIndex].items" :key="item.name">
-                            {{ item.name }} - {{ item.quantity }} - {{ item.price }}
-                        </li>
-                    </ul>
-                </div>
-                <div class="buttons">
-                    <Button label="Cancel" @click="showOverlay=false" />
-                </div>
-            </div>
-        </div>
+  <div class="overlay-content">
+    <h3>Order Info</h3>
+    <div class="form-group">
+      <label for="item">Items:</label>
+      <ul>
+        <li v-for="item in parsedOrderItems" :key="item.name">
+          {{ item.name }} - ₱{{ item.price }} x {{ item.quantity }} = ₱{{ item.price * item.quantity }}
+        </li>   
+      </ul>
+    </div>
+    <div class="buttons">
+      <Button label="Cancel" @click="showOverlay=false" />
+    </div>
+  </div>
+</div>
 </template>
 
 <style scoped>
@@ -180,4 +188,7 @@ const deleteOrder = (index) => {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
+  .action-button {
+    margin-left: 3px;
+}
 </style>
